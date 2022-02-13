@@ -32,7 +32,8 @@ var responseHeaders = function(req){
         'Upgrade: WebSocket', 
         'Connection: Upgrade', 
         `Sec-WebSocket-Accept: ${hash}`
-    ]; 
+    ];
+
     const protocol = req.headers['sec-websocket-protocol'];
     const protocols = !protocol ? [] : protocol.split(',').map(s => s.trim());
 
@@ -94,6 +95,7 @@ module.exports = function(server){
             response = responseHeaders(req);
             clave = estaciones[0].id_estacion;
             socket.write(response.join('\r\n') + '\r\n\r\n' );
+
         }else{
             console.log('La estacion no ha sido agregada aun');
             //socket.end('HTTP/1.1 400 Bad Request');
@@ -126,9 +128,11 @@ module.exports = function(server){
         socket.on("data", async(buffer) => {
             
             const lista = funciones.parseMessage(buffer);
+            lista = [mensaje, codigo_operacion]
             if (lista==null){
                 return;
             };  
+
             var message = lista[0]; 
             
             console.log('                                      ');
@@ -139,6 +143,7 @@ module.exports = function(server){
             const CallId = 2;       
             const CallResultId = 3;
             const CallErrorId = 4;
+
             if (opCode === 0x1 ) {
                 console.log('codigo de operacion 1')
                 const MessageTypeId = message[0];
@@ -150,13 +155,17 @@ module.exports = function(server){
                     Respuestas = await ffs.funcionesnuevas(message);
                     PayloadResponse = Respuestas[0];
                     PayloadResponseNav = Respuestas[1];
+                    
                     /*if(Respuestas.length==2){
                         PayloadResponseNav = Respuestas[1];
                     }*/
+
                     console.log('                                            ');
+                    
                     let CallResult = [CallResultId, UniqueId, PayloadResponse]; 
                     console.log('Respuesta a enviar al punto de carga: ')
                     console.log(CallResult);
+                    
                     socket.write(funciones.constructReply(CallResult, opCode));
 
                     /*************Respuesta para navegador****************/
