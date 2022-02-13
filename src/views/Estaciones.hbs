@@ -22,7 +22,7 @@
                             {{#if datosEstacion}}
                                 <button onclick="setPageAddStation()" class="btn btn-info">
                                     Agregar nueva estación</button>
-                                <button onclick="xhr()" class="btn btn-success">
+                                <button onclick="xhr()" class="btn btn-danger">
                                     Solicitud HTTP</button>
                             {{else}}
                                 <p>No existe ninguna estación registrada en la base de datos</p>
@@ -56,8 +56,10 @@
                             <td class="text-center">
                                 <button onclick="toStationDetails({{id_estacion}})" title="Detalles">
                                 <em class="fa fa-eye p-2 btn btn-info btn-sm"></em></button>
-                                <a href="/home/estaciones/tiempoReal/{{id_estacion}}" title="Tiempo Real">
-                                <em class="fas fa-gas-pump p-2 btn-success btn-sm"></em> </a>
+                                <!--<a href="/home/estaciones/tiempoReal/{{id_estacion}}" title="Tiempo Real">
+                                <em class="fas fa-gas-pump p-2 btn-success btn-sm"></em> </a>-->
+                                <button onclick="fromStationsToRealTime()" title="Ver en Tiempo Real">
+                                <em class="fas fa-gas-pump p-2 btn-success btn-sm"></em> </button>
                             </td>
                         </tr>
                         {{/each}} 
@@ -102,6 +104,7 @@
             <div class="card-header text-center">
                 <h3 style="font-family: sans-serif;">Detalles de la estacion {{estacion.nombre_estacion}}</h3>
             </div>
+            <button class="btn btn-info col-md-3" onclick="getDiagnostics(1)">Obtener Diagnosticos</button>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4 text-center">

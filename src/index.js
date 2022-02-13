@@ -7,7 +7,10 @@ const {database} = require('./keys');
 const passport = require('passport');
 const express = require('express');
 const flash = require('connect-flash');
+var url = require('url');
 
+/*new URL('/public/diagnosticos', 'file:');           1
+pathToFileURL('/foo#1'); */
 
 
 //Initializations

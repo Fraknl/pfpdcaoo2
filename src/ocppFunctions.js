@@ -20,31 +20,50 @@ const pool = require('./database.js');
 
 
 async function AuthorizeResponse(crfid){
-    const datosTarjeta = await pool.query('SELECT id_tarjeta, estado FROM tarjetas where codigo_rfid="' + crfid + '";');
+    var datosTarjeta = await pool.query('SELECT id_tarjeta, estado FROM tarjetas where codigo_rfid="' + crfid + '";');
+    console.log('datos tarjeta: ');
     console.log(datosTarjeta);
-    if (datosTarjeta.length==1){
-        if (datosTarjeta[0].estado=='Accepted'){
-            return {"idTagInfo": {"status": "Accepted"}};
+    var PayloadResponse = {};
+    datosTarjeta = datosTarjeta[0];
+    console.log('datos tarjeta luego: ');
+    console.log(datosTarjeta);
+    if (datosTarjeta){
+        console.log('si es mayor que 0')
+        if (datosTarjeta.estado=='Accepted'){
+            console.log('aceptada')
+            PayloadResponse =  {"idTagInfo": {"status": "Accepted"}};
         }else{
-            return {"idTagInfo": {"status": "Blocked"}};
+            console.log('bloqueada')
+
+            PayloadResponse =  {"idTagInfo": {"status": "Blocked"}};
         } 
     }else{
-        return {"idTagInfo": {"status": "Invalid"}};
+        console.log('no hay tarjeta')
+
+        PayloadResponse =  {"idTagInfo": {"status": "Invalid"}};
     }
+
+    let PayloadResponseNav = {};
+    return [PayloadResponse, PayloadResponseNav];
 }
 
 
 function StatusNotificationResponse(Payload){
     console.log('Esto es pyload functions');
     console.log(Payload);
-
-    PayloadResponse = {};
+    const currentDate = new Date();
+    PayloadResponse = {"status": "Accepted", "currentDate": currentDate};
     PayloadResponseNav = {'tipo': 'status', 'texto':Payload.status};
 
     return [PayloadResponse, PayloadResponseNav];
 }
 
-
+function BootNotificationResponse(Payload){ 
+    const currentDate = new Date();
+    PayloadResponse = PayloadResponse = {"status":"Accepted", "currentTime":currentDate, "interval":300};
+    PayloadResponseNav = {};
+    return [PayloadResponse, PayloadResponseNav];
+}
 
 async function StartTransactionResponse(Payload){
     let idTag = Payload.idTag;
@@ -53,27 +72,55 @@ async function StartTransactionResponse(Payload){
     let hora_inicio = Payload.timestamp;
     var transactionId;
     let ultTrans0 = await pool.query('SELECT id_transaccion FROM transacciones ORDER BY id_transaccion DESC LIMIT 1;');
+    ultTrans0 = ultTrans0[0];
+    console.log('ULTIMA TRANSACCION: ');
+    console.log(ultTrans0);
+
     if(ultTrans0.length==0){
         transactionId=1;
     }else{
-        transactionId = ultTrans0[0].id_transaccion + 1;
+        transactionId = ultTrans0.id_transaccion + 1;
     }
-    PayloadResponse = {"idTagInfo": {"status": "Accepted"}};
+
+    PayloadResponse = {"idTagInfo": {"status": "Accepted"}, "transactionId": transactionId};
+    
     let idStation = 1;
     let ec = '0';
-    let sql = 'INSERT INTO transacciones VALUES (?)';
+    //let sql = 'INSERT INTO transacciones VALUES (?)';
     let estado = 'Iniciada';
+
     var values = [transactionId, idStation, idTag, connectorId, 
         hora_inicio, hora_inicio, meterStart, meterStart, ec, estado, estado];
-    pool.query(sql, [values], function (err, result) {
+    var sql = 'INSERT INTO transacciones values ('
+    + '"' + transactionId + '",' 
+    + '"' + idStation + '",'
+    + '"' + idTag + '",' 
+    + '"' + connectorId + '",' 
+    + '"' + hora_inicio + '",' 
+    + '"' + hora_inicio + '",' 
+    + '"' + meterStart + '",' 
+    + '"' + meterStart + '",' 
+    + '"' + ec + '",' 
+    + '"' + estado + '",' 
+    + '"' + estado + '"'
+    + ')';
+
+    let insert  = await pool.query(sql);
+    if (insert){
+        console.log('Se ha ingresado algo en db transacciones')
+    }else{
+        console.log('Fallo al ingresar');
+    }
+    /*let insert = await pool.query(sql, [values], function (err, result) {
         if (err) throw err;
         console.log("Se ha ingresado " + result.affectedRows + " fila a la base de datos");
-    });
-    PayloadResponse = {"idTagInfo": {"status": "Accepted"}, "transactionId": transactionId};
-    //PayloadResponseNav = {'tipo': 'status', 'texto':'cargando'};
+    });*/
+
+    //let PayloadResponse = {"idTagInfo": {"status": "Accepted"}, "transactionId": transactionId};
+    let PayloadResponseNav = {'tipo': 'status', 'texto':'cargando'};
 
     console.log('finaliza StartTransactionResponse')
-    return PayloadResponse
+    return [PayloadResponse, PayloadResponseNav];
 }
 
 function MeterValuesConf(Payload){
@@ -101,23 +148,37 @@ async function StopTransactionConf(Payload){
     /*for (const property in Payload){
         console.log(property + ' : ' + Payload[property]);
     };*/
+    //var transactionId = Payload.transactionId;
     let estado = 'Finalizada' 
     let transactionId = Payload.transactionId;
     let hora_fin = Payload.timestamp;
     let meterStart = await pool.query('SELECT energia_inicio FROM transacciones WHERE id_transaccion='+transactionId+';');
+    console.log('Esto es meter start');
+    console.log(meterStart);
     let meterStop = Payload.meterStop;
     let ec = parseInt(meterStop,10) - parseInt(meterStart[0].energia_inicio,10);
     ec = ec*1000;
     console.log(ec);
     let razon = Payload.reason;
     const values = [hora_fin, meterStop, ec, estado, razon, transactionId]
-    let sql = 'UPDATE transacciones SET hora_fin=?, energia_fin=?, energia_consumida=?, estado=?, razon=? WHERE id_transaccion=?';
-    pool.query(sql, values, function (err, result) {
+    let sql = 'UPDATE transacciones SET ' 
+    + 'hora_fin="' + hora_fin 
+    + '", energia_fin="' + meterStop 
+    + '",energia_consumida="' + ec
+    + '",estado="' + estado 
+    + '",razon="' + razon 
+    + '" WHERE id_transaccion="'
+    + transactionId + '";'; 
+    let update = await pool.query(sql);
+    //console.log(sql);
+    /*let resultupdate = await pool.query(sql, values, function (err, result) {
         if (err) throw err;
         console.log("Number of records updated: " + result.affectedRows);
-    });
+    });*/
+
     PayloadResponse = {"idTagInfo": {"status": "Accepted"}};
-    return PayloadResponse
+    PayloadResponseNav = {"idTagInfo": {"status": "Accepted"}};
+    return [PayloadResponse, PayloadResponseNav];
 }
 
 async function RemoteStartTransactionReq(Payload){
@@ -160,6 +221,13 @@ async function RemoteStartTransactionReq(Payload){
     //PayloadResponse = {"idTagInfo": {"status": "Accepted"}};
     //return PayloadResponse
 }
+ function DiagnosticsStatusNotificationResponse(Payload){
+     PayloadResponse = {};
+     //PayloadResponseNav = {};
+    return [PayloadResponse];
+ }
+
+
 
 async function funcionesnuevas (message){
     var PayloadResponse;
@@ -167,7 +235,8 @@ async function funcionesnuevas (message){
     let Payload = message[3];
     const currentDate = new Date();   
     if (Action=='BootNotification'){
-        PayloadResponse = {"status":"Accepted", "currentTime":currentDate, "interval":300}
+        PayloadResponse = BootNotificationResponse(Payload);
+        //PayloadResponse = {"status":"Accepted", "currentTime":currentDate, "interval":300}
     }else if (Action=='StatusNotification'){
         console.log('llega al servidor un status notification')
         //PayloadResponse = {"status":"Accepted", "timestamp": currentDate};
@@ -184,6 +253,8 @@ async function funcionesnuevas (message){
         PayloadResponse = MeterValuesConf(Payload);
     }else if(Action=='StopTransaction'){
         PayloadResponse = StopTransactionConf(Payload)
+    }else if(Action=='DiagnosticsStatusNotification') {
+        PayloadResponse = DiagnosticsStatusNotificationResponse(Payload);
     }else{
         //OPERACIONES INICIADAS DESDE EL NAVEGADOR WEB
         if(Action=='RemoteStartTransaction'){

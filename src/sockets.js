@@ -1,12 +1,20 @@
 const crypto = require('crypto');
 const { urlencoded, text } = require('express');
-const { url } = require('inspector');
+//const { url } = require('inspector');
 const { type } = require('os');
 const pool = require('./database.js');
 const funciones = require('./funciones.js');
 var clientes = new Map();
 const ffs = require('./ocppFunctions');
 const ffsnav = require('./ocppFunctionsServer');
+const path = require('path');
+
+const url = require('url');
+//url.fileURLToPath(url)
+var uriDiagnotics = url.pathToFileURL(path.join(__dirname, '/public/diagnostics'));
+console.log('uri diagnosticos');
+var uri = uriDiagnotics.href;
+console.log(uri);
 
 var generateAcceptValue = function (acceptKey) {
     return crypto
@@ -142,6 +150,9 @@ module.exports = function(server){
                     Respuestas = await ffs.funcionesnuevas(message);
                     PayloadResponse = Respuestas[0];
                     PayloadResponseNav = Respuestas[1];
+                    /*if(Respuestas.length==2){
+                        PayloadResponseNav = Respuestas[1];
+                    }*/
                     console.log('                                            ');
                     let CallResult = [CallResultId, UniqueId, PayloadResponse]; 
                     console.log('Respuesta a enviar al punto de carga: ')
@@ -165,8 +176,12 @@ module.exports = function(server){
 
                 }else if (MessageTypeId==3){
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
+
                 }else{
                     console.log('Se ha recibido un mensaje desde navegador!')
+                    //message = JSON.stringify(message);
+                    console.log('mensaje parseado en json: ');
+                    console.log(message);
                     //console.log(Object.values(message))                    
                     if(message.tipo=='acceptWsHandshake'){
                         console.log('navegador solicita aceptar la conexion')
@@ -179,6 +194,16 @@ module.exports = function(server){
                         temporalClient.write(response.join('\r\n') + '\r\n\r\n' );
                         //temporalClient.write(funciones.constructReply(response, 0x1));
                         
+                    }else if(message.tipo=='GetDiagnostics'){
+                        var stationId = message.stationId;
+                        console.log('Servidor recibe get diagnostics');
+                        console.log('Y el id de la estacion: ');
+                        console.log(stationId);
+                        var stationClient = clientes.get(stationId);
+                        PayloadRequest = {"location": uri.toString()};
+                        var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                        stationClient.write(funciones.constructReply(OIBCS, 0x1))
+
                     }else{
                         //console.log('Estos son los clientes conectados: ');
                         //console.log(clientes);

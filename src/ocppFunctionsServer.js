@@ -151,8 +151,8 @@ async function RemoteStartTransactionReq(clientes, Action, ide){
 
 
 async function funcionesNuevasNav (message, clientes){
-    console.log('Esto es message ');
-    console.log(message);
+    /*console.log('Esto es message ');
+    console.log(message);*/
     var PayloadResponse;
     var ide = parseInt(message.substring(0,1), 10);
     const Action = message.substring(1, message.length);

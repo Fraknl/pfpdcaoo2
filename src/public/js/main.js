@@ -10,6 +10,13 @@ function confirmDelete(){
 	}
 }
 
+function getDiagnostics(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetDiagnostics", "stationId": stationId});
+	ws.send(PayloadRequest);
+	
+}
+
 function xhr(){
 	console.log('se llama a xhr')
 	const url = '/home/estaciones/urlprueba';
@@ -21,14 +28,21 @@ function xhr(){
 	}
 }
 
+
+function fromStationsToRealTime(){
+	document.getElementById('').style.display = 'none';
+	document.getElementById('').style.display = 'block';
+}
+
 function toStationDetails(id){
-	console.log('datos estacion: ');
+	//console.log('datos estacion: ');
 	const url = '/home/estaciones/editar/'+id;
 	http.open("get", url);
 	http.send();
 
 	http.onreadystatechange=(e)=>{
-		console.log('Respuesta desde el server: ' + http.responseText);
+		var a = 1;
+		//console.log('Respuesta desde el server: ' + http.responseText);
 	}
 
 	document.getElementById('stationDetails').style.display = 'block';
