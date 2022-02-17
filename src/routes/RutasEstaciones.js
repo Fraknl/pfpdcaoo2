@@ -3,6 +3,9 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/seguro.js');
 var Plotly = require('plotly')("DemoAccount", "lr1c37zw81");
+const multer = require('multer');
+const path = require('path');
+
 
 router.get('/home/estaciones/informacion', async(req, res) => {
 	const datosEstacion = await pool.query('SELECT * FROM estaciones;'); 
@@ -122,5 +125,17 @@ router.get('/home/estaciones/urlprueba', async(req, res) => {
 	res.send('hola que tal');
 })
 
+/***************para subir archivos*********************/
+
+const upload = multer({
+	dest: path.join(__dirname + '/diagnostics')
+})
+
+
+router.post('/files', upload.single('diagnostico'), (req,res)=> {
+	console.log('Esta es la request: ');
+	console.log(req.file);
+	res.send('archivo subido')
+})
 
 module.exports = router; 

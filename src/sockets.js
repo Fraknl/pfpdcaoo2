@@ -209,7 +209,9 @@ module.exports = function(server){
                         console.log('Y el id de la estacion: ');
                         console.log(stationId);
                         var stationClient = clientes.get(stationId);
-                        PayloadRequest = {"location": uri.toString()};
+                        //PayloadRequest = {"location": uri.toString()};
+                        PayloadRequest = {"location": 'http://localhost:3000/files'};
+
                         var OIBCS = [2, '10', message.tipo, PayloadRequest];
                         stationClient.write(funciones.constructReply(OIBCS, 0x1))
 
