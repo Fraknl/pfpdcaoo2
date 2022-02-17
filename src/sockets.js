@@ -128,7 +128,7 @@ module.exports = function(server){
         socket.on("data", async(buffer) => {
             
             const lista = funciones.parseMessage(buffer);
-            lista = [mensaje, codigo_operacion]
+            //lista = [mensaje, codigo_operacion]
             if (lista==null){
                 return;
             };  
@@ -158,7 +158,7 @@ module.exports = function(server){
                     
                     /*if(Respuestas.length==2){
                         PayloadResponseNav = Respuestas[1];
-                    }*/
+                    }*/    
 
                     console.log('                                            ');
                     
