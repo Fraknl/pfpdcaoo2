@@ -60,7 +60,7 @@ function StatusNotificationResponse(Payload){
 
 function BootNotificationResponse(Payload){ 
     const currentDate = new Date();
-    PayloadResponse = PayloadResponse = {"status":"Accepted", "currentTime":currentDate, "interval":300};
+    PayloadResponse = {"status":"Accepted", "currentTime":currentDate, "interval":300};
     PayloadResponseNav = {};
     return [PayloadResponse, PayloadResponseNav];
 }
@@ -227,6 +227,18 @@ async function RemoteStartTransactionReq(Payload){
     return [PayloadResponse];
  }
 
+ function FirmwareStatusNotificationResponse(Payload){
+    PayloadResponse = {};
+    //PayloadResponseNav = {};
+   return [PayloadResponse];
+}
+
+function DataTransferResponse(Payload){
+    PayloadResponse = {"status":"Accepted","data":"bkhg"};
+    //PayloadResponseNav = {};
+   return [PayloadResponse];
+}
+
 
 
 async function funcionesnuevas (message){
@@ -255,7 +267,14 @@ async function funcionesnuevas (message){
         PayloadResponse = StopTransactionConf(Payload)
     }else if(Action=='DiagnosticsStatusNotification') {
         PayloadResponse = DiagnosticsStatusNotificationResponse(Payload);
-    }else{
+    }else if(Action=='FirmwareStatusNotification') {
+        PayloadResponse = FirmwareStatusNotificationResponse(Payload);
+    }else if(Action=='DataTransfer') {
+        PayloadResponse = DataTransferResponse(Payload);
+    }
+    
+    
+    else{
         //OPERACIONES INICIADAS DESDE EL NAVEGADOR WEB
         if(Action=='RemoteStartTransaction'){
             PayloadResponse = StopTransactionConf(Payload)

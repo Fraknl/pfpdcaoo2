@@ -84,6 +84,7 @@ module.exports = function(server){
             return;
         }; 
         
+        
         let query = 'SELECT id_estacion FROM estaciones WHERE codigo_estacion="' + url_est + '";';
         let estaciones = await pool.query(query);
         console.log('resultado sql de estaciones');
