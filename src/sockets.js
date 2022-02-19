@@ -9,6 +9,43 @@ const ffs = require('./ocppFunctions');
 const ffsnav = require('./ocppFunctionsServer');
 const path = require('path');
 
+
+
+
+//var Client = require('ftp');
+
+ 
+/*var c = new Client();
+console.log('Este es el clinte')
+console.log();
+
+
+c.on('ready', function() {
+    console.log('Cliente ftp')
+c.list(function(err, list) {
+    if (err) throw err;
+    console.dir(list);
+    c.end();
+    });
+});*/
+// connect to localhost:21 as anonymous
+//c.connect();
+
+
+const FtpSrv = require('ftp-srv');
+const ftpServer = new FtpSrv({});
+
+ftpServer.on('login', (data, resolve, reject) => {
+    console.log('Server login');
+ });
+
+ftpServer.listen()
+.then(() => { console.log('listen') });
+
+
+
+
+
 const url = require('url');
 //url.fileURLToPath(url)
 var uriDiagnotics = url.pathToFileURL(path.join(__dirname, '/public/diagnostics'));
@@ -185,6 +222,7 @@ module.exports = function(server){
 
                 }else if (MessageTypeId==3){
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
+                    console.log(message[2]);
 
                 }else{
                     console.log('Se ha recibido un mensaje desde navegador!')
@@ -209,8 +247,20 @@ module.exports = function(server){
                         console.log('Y el id de la estacion: ');
                         console.log(stationId);
                         var stationClient = clientes.get(stationId);
+                        //console.log(clientes);
                         //PayloadRequest = {"location": uri.toString()};
-                        PayloadRequest = {"location": 'http://localhost:3000/files'};
+                        PayloadRequest = {"location": 'ftp://192.168.222.201:3000/ftp/'};
+
+                        var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                        stationClient.write(funciones.constructReply(OIBCS, 0x1))
+
+                    }else if(message.tipo=='GetConfiguration'){
+                        var stationId = message.stationId;
+                        console.log('Servidor recibe get configuration');
+                        var stationClient = clientes.get(stationId);
+                        //PayloadRequest = {"location": uri.toString()};
+                        PayloadRequest = {"key": ['SupportedFileTransferProtocols']};
+                        console.log('payload: ', PayloadRequest)
 
                         var OIBCS = [2, '10', message.tipo, PayloadRequest];
                         stationClient.write(funciones.constructReply(OIBCS, 0x1))

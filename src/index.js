@@ -9,13 +9,15 @@ const express = require('express');
 const flash = require('connect-flash');
 var url = require('url');
 
-/*new URL('/public/diagnosticos', 'file:');           1
-pathToFileURL('/foo#1'); */
 
+const serveIndex = require('serve-index');
+new URL('/public/diagnosticos', 'file:');           1
+//pathToFileURL('/foo#1');
 
 //Initializations
 const app = express();
 require('./lib/passport');
+
 
 
 app.use(express.urlencoded({extended: false}));
@@ -23,6 +25,17 @@ app.use(express.static(path.join(__dirname, '/public')));
 //app.use(passport.session());
 //app.use(passport.initialize());
 app.set('views', path.join(__dirname, 'views'));
+
+
+
+
+
+app.use(
+  '/ftp',
+  express.static('/public'),
+  serveIndex('/public', {icons: true})
+)
+
 
 /* nuevo código */
 app.use((req, res, next) => {
