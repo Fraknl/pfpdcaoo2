@@ -104,7 +104,11 @@
             <div class="card-header text-center">
                 <h3 style="font-family: sans-serif;">Detalles de la estacion {{estacion.nombre_estacion}}</h3>
             </div>
-            <button class="btn btn-info col-md-3" onclick="getDiagnostics(1)">Obtener Diagnosticos</button>
+            <form action="/files" method="post" enctype="multipart/form-data">
+                <input type="file" name="diagnostico">
+                <input type="submit" class="btn btn-success col-md-3"  value="Subir archivo">
+            </form>
+            <!--<button class="btn btn-info col-md-3" onclick="getDiagnostics(1)">Obtener Diagnosticos modif</button>-->
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4 text-center">
@@ -159,6 +163,8 @@
                             <a  class="btn btn-warning" name="volver" 
                             href="/home/estaciones/transacciones/{{datosEstacion.id_estacion}}">
                             <em class="fa fa-pencil"></em> Historial de Cargas</a>
+                            <button onclick="getDiagnostics()" class="btn btn-danger">Pedir diagnostico</button>
+
                         </div>
                     </div>
                 </div>

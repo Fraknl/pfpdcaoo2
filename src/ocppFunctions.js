@@ -27,6 +27,7 @@ async function AuthorizeResponse(crfid){
     datosTarjeta = datosTarjeta[0];
     console.log('datos tarjeta luego: ');
     console.log(datosTarjeta);
+    
     if (datosTarjeta){
         console.log('si es mayor que 0')
         if (datosTarjeta.estado=='Accepted'){
@@ -245,7 +246,8 @@ async function funcionesnuevas (message){
     var PayloadResponse;
     let Action = message[2]; 
     let Payload = message[3];
-    const currentDate = new Date();   
+    const currentDate = new Date();
+
     if (Action=='BootNotification'){
         PayloadResponse = BootNotificationResponse(Payload);
         //PayloadResponse = {"status":"Accepted", "currentTime":currentDate, "interval":300}
