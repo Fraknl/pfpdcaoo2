@@ -11,47 +11,31 @@ const path = require('path');
 
 
 
-
-//var Client = require('ftp');
-
- 
-/*var c = new Client();
-console.log('Este es el clinte')
-console.log();
-
-
-c.on('ready', function() {
-    console.log('Cliente ftp')
-c.list(function(err, list) {
-    if (err) throw err;
-    console.dir(list);
-    c.end();
-    });
-});*/
-// connect to localhost:21 as anonymous
-//c.connect();
-
-
 const FtpSrv = require('ftp-srv');
-const ftpServer = new FtpSrv({});
+const ur = 'ftp://192.168.1.20:3000/';
+const ftpServer = new FtpSrv({'url': ur,
+'greeting': 'Saludo de bienvenida desde servidor OCPP'});
+const blacklist = [];
+const whitelist = ['DIR', 'PWD', 'CWD', 'TYPE', 'PASV', 'PORT', 'LIST', 'STOR'];
 
 ftpServer.on('login', (data, resolve, reject) => {
-    console.log('Server login');
+    var username = data.username;
+    var password = data.password;
+    //if(username=='admin' && password=='ftp123'){
+        //console.log('Credenciales FTP correctas')
+        const rutaFTP = '/src/public/diagnostics/';
+        const res = {'cwd': rutaFTP, 'blacklist': blacklist, 'whitelist': whitelist}
+        resolve(res);
+    //}
+    /*else{
+        reject();
+    }*/
+    
  });
 
 ftpServer.listen()
-.then(() => { console.log('listen') });
+.then(() => { console.log('Servidor FTP escuchando') });
 
-
-
-
-
-const url = require('url');
-//url.fileURLToPath(url)
-var uriDiagnotics = url.pathToFileURL(path.join(__dirname, '/public/diagnostics'));
-console.log('uri diagnosticos');
-var uri = uriDiagnotics.href;
-console.log(uri);
 
 var generateAcceptValue = function (acceptKey) {
     return crypto
@@ -249,7 +233,7 @@ module.exports = function(server){
                         var stationClient = clientes.get(stationId);
                         //console.log(clientes);
                         //PayloadRequest = {"location": uri.toString()};
-                        PayloadRequest = {"location": 'ftp://192.168.222.201:3000/ftp/'};
+                        PayloadRequest = {"location": 'ftp://192.168.222.201:3000/'};
 
                         var OIBCS = [2, '10', message.tipo, PayloadRequest];
                         stationClient.write(funciones.constructReply(OIBCS, 0x1))
