@@ -12,8 +12,8 @@ const path = require('path');
 
 
 const FtpSrv = require('ftp-srv');
-const ur = 'ftp://192.168.1.20:3000/';
-const ftpServer = new FtpSrv({'url': ur,
+const uriFTP = 'ftp://192.168.222.201:3000/';
+const ftpServer = new FtpSrv({'url': uriFTP,
 'greeting': 'Saludo de bienvenida desde servidor OCPP'});
 const blacklist = [];
 const whitelist = ['DIR', 'PWD', 'CWD', 'TYPE', 'PASV', 'PORT', 'LIST', 'STOR'];
@@ -233,7 +233,7 @@ module.exports = function(server){
                         var stationClient = clientes.get(stationId);
                         //console.log(clientes);
                         //PayloadRequest = {"location": uri.toString()};
-                        PayloadRequest = {"location": 'ftp://192.168.222.201:3000/'};
+                        PayloadRequest = {"location": uriFTP};
 
                         var OIBCS = [2, '10', message.tipo, PayloadRequest];
                         stationClient.write(funciones.constructReply(OIBCS, 0x1))
