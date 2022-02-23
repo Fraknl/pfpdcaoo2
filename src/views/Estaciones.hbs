@@ -104,10 +104,10 @@
             <div class="card-header text-center">
                 <h3 style="font-family: sans-serif;">Detalles de la estacion {{estacion.nombre_estacion}}</h3>
             </div>
-            <form action="/files" method="post" enctype="multipart/form-data">
+            <!--<form action="/files" method="post" enctype="multipart/form-data">
                 <input type="file" name="diagnostico">
                 <input type="submit" class="btn btn-success col-md-3"  value="Subir archivo">
-            </form>
+            </form>-->
             <!--<button class="btn btn-info col-md-3" onclick="getDiagnostics(1)">Obtener Diagnosticos modif</button>-->
             <div class="card-body">
                 <div class="row">
@@ -120,7 +120,7 @@
                         width="200px" height="400px" style="border: 1px solid; padding: 1px">
                         {{/if}}
                     </div>
-                    <div class="col-md-7 text-center" >
+                    <div class="col-md-5 text-center">
                         <div class="card" style="margin-bottom: 20px">
                             <div class="card-header">
                                 Detalles
@@ -131,7 +131,6 @@
                                     <span style="padding-right: 30px"><b>Código:</b> {{datosEstacion.codigo_estacion}}</span>
                                     <span style="padding: 3px"><b>Nombre:</b> {{datosEstacion.nombre_estacion}}</span>
                                 </div>
-                                
                             </div>
                         </div>
                         <div class="card" style="margin-bottom: 20px;">
@@ -146,7 +145,6 @@
                                     <label><b>Voltaje Nominal:  </b>{{datosEstacion.voltage_nominal}}</label><br>
                                 </div>
                                 <div class="col-md-6 text-center p-3">
-                                    
                                     <label><b>Voltaje Maximo:   </b>{{datosEstacion.voltage_maximo}}</label><br>
                                     <label><b>Corriente Nominal:</b> {{datosEstacion.corriente_nominal}}</label><br>
                                     <label><b>Corriente Maxima: </b> {{datosEstacion.corriente_maxima}}</label><br>
@@ -162,11 +160,33 @@
                             <em class="fa fa-pencil"></em> Editar</button>
                             <a  class="btn btn-warning" name="volver" 
                             href="/home/estaciones/transacciones/{{datosEstacion.id_estacion}}">
-                            
                             <em class="fa fa-pencil"></em> Historial de Cargas</a>
-                            <button onclick="getDiagnostics(1)" class="btn btn-danger">Pedir diagnostico</button>
-                            <button onclick="getConfiguration(1)" class="btn btn-danger">Obtener configuracion</button>
+                        </div>
+                    </div>
 
+                    <div class="col-md-3">
+                        <div class="card" style="margin-bottom: 20px">
+                            <div class="card-header">
+                                <b>Operaciones OCPP</b>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div>
+                                    <button onclick="cancelReservation(1)" class="btn btn-danger m-1">Cancelar Reservacion</button>
+                                    <button onclick="changeAvailability(1)" class="btn btn-info m-1">Cambiar Diposnibilidad</button>
+                                    <button onclick="getDiagnostics(1)" class="btn btn-success m-1">Pedir diagnostico</button>
+                                    <button onclick="getConfiguration(1)" class="btn btn-warning m-1">Obtener configuracion</button>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div>
+                                    <b>Mensaje desde la estacion</b>
+                                </div>
+                                <div id="stationResponse">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
