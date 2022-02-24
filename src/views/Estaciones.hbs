@@ -111,7 +111,7 @@
             <!--<button class="btn btn-info col-md-3" onclick="getDiagnostics(1)">Obtener Diagnosticos modif</button>-->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4 text-center">
+                    <div class="col-md-2 text-center">
                         {{#if datosEstacion.nombre_foto}}
                         <img src="/images/estaciones/{{datosEstacion.nombre_foto}}" 
                         width="200px" height="400px" style="border: 1px solid; padding: 1px">
@@ -164,7 +164,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <div class="card" style="margin-bottom: 20px">
                             <div class="card-header">
                                 <b>Operaciones OCPP</b>
@@ -174,8 +174,24 @@
                                 <div>
                                     <button onclick="cancelReservation(1)" class="btn btn-danger m-1">Cancelar Reservacion</button>
                                     <button onclick="changeAvailability(1)" class="btn btn-info m-1">Cambiar Diposnibilidad</button>
-                                    <button onclick="getDiagnostics(1)" class="btn btn-success m-1">Pedir diagnostico</button>
-                                    <button onclick="getConfiguration(1)" class="btn btn-warning m-1">Obtener configuracion</button>
+                                    <button onclick="changeConfiguration(1)" class="btn btn-warning m-1">Cambiar Configuración</button>
+                                    <button onclick="clearCache(1)" class="btn btn-success m-1">Limpiar Caché</button>
+                                    <button onclick="clearChargingProfile(1)" class="btn btn-primary m-1">Limpiar Perfil de Carga</button>
+                                    <button onclick="dataTransfer(1)" class="btn btn-secondary m-1">Transferencia de Datos</button>
+                                    <button onclick="getCompositeSchedule(1)" class="btn btn-light m-1">Obtener Horario Compuesto</button>
+                                    <button onclick="getConfiguration(1)" class="btn btn-dark m-1">Obtener configuracion</button>
+                                    <button onclick="getDiagnostics(1)" class="btn btn-muted m-1">Pedir diagnostico</button>
+                                    <button onclick="remoteStartTransaction(1)" class="btn btn-danger m-1">Iniciar Transaccion Remota</button>
+                                    <button onclick="remoteStopTransaction(1)" class="btn btn-info m-1">Detener Transaccion Remota</button>
+                                    <button onclick="getLocalLisVersion(1)" class="btn btn-warning m-1">Obtener Version de Lista Local</button>
+                                    <button onclick="reserveNow(1)" class="btn btn-success m-1">Reservar Ahora</button>
+                                    <button onclick="reset(1)" class="btn btn-primery m-1">Resetear</button>
+                                    <button onclick="sendLocalList(1)" class="btn btn-secondary m-1">Enviar Lista Local</button>
+                                    <button onclick="setChargningProfile(1)" class="btn btn-light m-1">Establecer Perfil de Carga</button>
+                                    <button onclick="getLocalLisVersion(1)" class="btn btn-dark m-1">Obtener Version de Lista Local</button>
+                                    <button onclick="triggerMessage(1)" class="btn btn-muted m-1">Solicitar Operacion OCPP</button>
+                                    <button onclick="unlockConector(1)" class="btn btn-danger m-1">Desbloquear Conector</button>
+                                    <button onclick="updateFirmware(1)" class="btn btn-info m-1">Actualizar Firmware</button>
                                 </div>
                             </div>
 

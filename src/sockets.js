@@ -241,17 +241,6 @@ module.exports = function(server){
                             temporalClient.write(response.join('\r\n') + '\r\n\r\n' );
                             //temporalClient.write(funciones.constructReply(response, 0x1));
                             
-                        }else if(message.tipo=='GetDiagnostics'){
-                            console.log('Servidor recibe get diagnostics');
-                            console.log('Y el id de la estacion: ');
-                            console.log(stationId);
-                            PayloadRequest = {"location": uriFTP};
-                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
-                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
-                        }else if(message.tipo=='GetConfiguration'){
-                            PayloadRequest = {"key": ['SupportedFileTransferProtocols']};
-                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
-                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='CancelReservation'){
                             PayloadRequest = {"reservationId": '1'};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
@@ -264,6 +253,14 @@ module.exports = function(server){
                             PayloadRequest = {"reservationId": '1'};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetDiagnostics'){
+                            PayloadRequest = {"location": uriFTP};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetConfiguration'){
+                            PayloadRequest = {"key": ['SupportedFileTransferProtocols']};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else{
                             clientenav = clientes.get(0);
                             PayloadResponse = await ffsnav.funcionesNuevasNav(message, clientes)
@@ -274,7 +271,6 @@ module.exports = function(server){
                             socket.write(funciones.constructReply(CallResult, opCode));
                         }
                     }else{
-
                         clientenav = clientes.get(0);
                         var Response = {
                             'texto': 'No hay una estacion conectada',
