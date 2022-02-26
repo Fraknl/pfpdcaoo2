@@ -13,9 +13,15 @@ ws.addEventListener('message', event => {
         console.error('No se pudo parsear');
     }
 
+
     const boton = js1.boton;
     const texto = js1.texto;
     const tipo = js1.tipo;
+
+    console.log('boton: ' + boton);
+    console.log('texto: ' + texto);
+    console.log('tipo: ' + tipo);
+
 
     if(tipo=='recibido'){
         console.log('Se ha recibido configuración');
@@ -53,8 +59,12 @@ ws.addEventListener('message', event => {
         }
     }
 
-    if(tipo=='recibidos'){
+    /*if(tipo=='recibidos'){
         document.getElementById(boton).innerHTML = 'No hay vehículo eléctrico conectado';
+    };*/
+
+    if(tipo=='recibidos'){
+        document.getElementById(boton).innerHTML = texto;
     };
 
     if(tipo == 'metervalues'){

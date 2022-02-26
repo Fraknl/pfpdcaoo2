@@ -135,7 +135,14 @@ const upload = multer({
 router.post('/files', upload.single('diagnostico'), (req,res)=> {
 	console.log('Esta es la request: ');
 	console.log(req.file);
-	res.send('archivo subido')
+	res.redirect('/home/estaciones/informacion');
+})
+
+
+router.get('/files', upload.single('diagnostico'), (req,res)=> {
+	console.log('Esta es la request: ');
+	console.log(req.file);
+	res.redirect('/home/estaciones/informacion')
 })
 
 module.exports = router; 

@@ -10,11 +10,22 @@ function confirmDelete(){
 	}
 }
 
+function cancelReservation(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "CancelReservation", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
 function getDiagnostics(stationId){
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "GetDiagnostics", "stationId": stationId});
 	ws.send(PayloadRequest);
-	
+}
+
+function getConfiguration(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetConfiguration", "stationId": stationId});
+	ws.send(PayloadRequest);
 }
 
 function david(stationId){
