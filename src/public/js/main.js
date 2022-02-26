@@ -54,6 +54,10 @@ function changeAvailability(stationId){
 "</div>";
 
 
+<<<<<<< HEAD
+=======
+function ChangeAvailability(stationId, id){
+>>>>>>> 5caad7ffd79ac5da4500b220ebc9c8a63158ae53
 	//console.log('Hola');
 	/*
 	var checkBox= document.getElementById(id);
@@ -84,6 +88,16 @@ function changeAvailability(stationId){
 
 
 
+<<<<<<< HEAD
+=======
+function david(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ReserveNow", "stationId": stationId});
+	ws.send(PayloadRequest);
+	
+}
+
+>>>>>>> 5caad7ffd79ac5da4500b220ebc9c8a63158ae53
 function xhr(){
 	console.log('se llama a xhr')
 	const url = '/home/estaciones/urlprueba';
@@ -111,10 +125,10 @@ function toStationDetails(id){
 		var a = 1;
 		//console.log('Respuesta desde el server: ' + http.responseText);
 	}
-
 	document.getElementById('stationDetails').style.display = 'block';
 	document.getElementById('stationsDetails').style.display = 'none';
 }
+
 function toStationsDetails(){
 	document.getElementById('stationDetails').style.display = 'none';
 	document.getElementById('stationsDetails').style.display = 'block';

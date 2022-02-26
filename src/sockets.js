@@ -241,7 +241,7 @@ module.exports = function(server){
                     //console.log(stationClient);
 
                     if(stationClient!=undefined){
-<<<<<<< HEAD
+
  
                     }else if(message.tipo=='ReserveNow'){
                         var stationId = message.stationId;
@@ -256,9 +256,7 @@ module.exports = function(server){
                         stationClient.write(funciones.constructReply(OIBCS, 0x1))
 
 
-=======
-                    
->>>>>>> f2d17c43b2f509c074b069f46dedb19e63566ace
+
                         if(message.tipo=='acceptWsHandshake'){
                             console.log('navegador solicita aceptar la conexion')
                             var temporalClient = clientes.get('temporal');
@@ -300,10 +298,7 @@ module.exports = function(server){
                             console.log(CallResult);
                             socket.write(funciones.constructReply(CallResult, opCode));
                         }
-<<<<<<< HEAD
 
-=======
->>>>>>> f2d17c43b2f509c074b069f46dedb19e63566ace
                     }else{
                         clientenav = clientes.get(0);
                         var Response = {
