@@ -12,7 +12,7 @@ function confirmDelete(){
 
 function cancelReservation(stationId){
 	console.log('stationId: ' + stationId);
-	var PayloadRequest = JSON.stringify({"tipo": "CancelReservation", "stationId": stationId});
+	var PayloadRequest = JSON.stringify({"tipo": "CancelReservation", "stationId": stationId, "reservationId": 1});
 	ws.send(PayloadRequest);
 }
 
