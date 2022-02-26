@@ -28,6 +28,37 @@ function getConfiguration(stationId){
 	ws.send(PayloadRequest);
 }
 
+function ChangeAvailability(stationId, id){
+	//console.log('Hola');
+	/*
+	var checkBox= document.getElementById(id);
+	var idConector;
+	console.log('stationId: ' + stationId);
+	if(id=="CCS"){
+		idConector=1;
+
+
+	}else if(id=="Chademo"){
+
+		idConector=2;
+
+	}else if(id=="AC"){
+		idConector=3;
+	}
+	if(checkBox.checked==true){
+		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Operative","Conector":idConector,"stationId": stationId});
+		ws.send(PayloadRequest);
+	}
+	else{
+		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Inoperative","Conector":idConector, "stationId": stationId});
+		ws.send(PayloadRequest);
+	}
+	*/
+}
+
+
+
+
 function xhr(){
 	console.log('se llama a xhr')
 	const url = '/home/estaciones/urlprueba';
