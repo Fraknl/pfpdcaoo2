@@ -161,10 +161,17 @@
                             <a  class="btn btn-warning" name="volver" 
                             href="/home/estaciones/transacciones/{{datosEstacion.id_estacion}}">
                             <em class="fa fa-pencil"></em> Historial de Cargas</a>
+
+                            <button onclick="getDiagnostics()" class="btn btn-danger">Pedir diagnostico</button>
+                            <button onclick="david(1)" class="btn btn-danger">boton david</button>
+
+                        </div>
+                    <!--</div> 
+
                             <button onclick="getDiagnostics()" class="btn btn-danger">Pedir diagnostico</button>
                             <button onclick="david(1)" class="btn btn-danger">boton david</button>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-5">
                         <div class="card" style="margin-bottom: 20px">
@@ -172,7 +179,7 @@
                                 <b>Operaciones OCPP</b>
                             </div>
                             
-                            <div class="card-body">
+                            <div class="card-body" id="Cuadro_opciones">
                                 <div>
                                     <button onclick="cancelReservation(1)" class="btn btn-danger m-1">Cancelar Reservacion</button>
                                     <button onclick="changeAvailability(1)" class="btn btn-info m-1">Cambiar Diposnibilidad</button>

@@ -245,7 +245,7 @@ module.exports = function(server){
                     var stationClient = clientes.get(stationId);
 
                     if(stationClient!=undefined){
-                    
+
                         if(message.tipo=='acceptWsHandshake'){
                             console.log('navegador solicita aceptar la conexion')
                             var temporalClient = clientes.get('temporal');
@@ -358,6 +358,7 @@ module.exports = function(server){
                             socket.write(funciones.constructReply(CallResult, opCode));*/
                             console.log('La operacion OCPP solicitada por el navegador aun no ha sido implementada')
                         }
+
                     }else{
                         clientenav = clientes.get(0);
                         var Response = {
