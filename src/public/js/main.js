@@ -1,14 +1,41 @@
 const http = new XMLHttpRequest();
 
-console.log('Esta es una linea para ver si funciona el pull de git');
-function confirmDelete(){
-	var contr;
-	contr=prompt('Por favor ingrese la contraseña de administración: ');
-	if (contr == 'contraadmin'){
-		return true; 
-	}else{
-		return false;
-	}
+
+function changeConfiguration(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ChangeConfiguration", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function setChargingProfile(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "SetChargingProfile", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+
+function clearChargingProfile(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ClearChargingProfile", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function getLocalListVersion(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetLocalListVersion", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function sendLocalList(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "SendLocalList", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function getCompositeSchedule(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetCompositeSchedule", "stationId": stationId});
+	ws.send(PayloadRequest);
 }
 
 function cancelReservation(stationId){

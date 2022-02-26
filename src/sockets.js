@@ -41,13 +41,16 @@ console.log(miIp);
 const FtpSrv = require('ftp-srv');
 /*const miIp = '192.168.222.201';
 const miIpLocal = '192.168.1.20';*/
-const uriFTP = 'ftp://'+miIp+':21/';
+//miIp = '192.168.222.201';
+//const uriFTP = 'ftp://'+miIp+':21/';
+const uriFTP = 'ftp://192.168.222.201:21/';
 const ftpServer = new FtpSrv({'url': uriFTP,
 'greeting': 'Saludo de bienvenida desde servidor OCPP'});
 const blacklist = [];
 const whitelist = ['DIR', 'PWD', 'CWD', 'TYPE', 'PASV', 'PORT', 'LIST', 'STOR'];
 
 ftpServer.on('login', (data, resolve, reject) => {
+    console.log(' ha habido un login')
     var username = data.username;
     var password = data.password;
     //if(username=='admin' && password=='ftp123'){
@@ -179,15 +182,12 @@ module.exports = function(server){
             
             console.log('                                      ');
             console.log('El servidor ha recibido datos----------------------------------------------------------------------');
-            console.log('Tipo de dato: ' + typeof(message));
-            console.log(message);
             const opCode = lista[1]; 
             const CallId = 2;       
             const CallResultId = 3;
             const CallErrorId = 4;
 
             if (opCode === 0x1 ) {
-                console.log('codigo de operacion 1')
                 const MessageTypeId = message[0];
                 const UniqueId = message[1];
                 var PayloadResponse;
@@ -220,7 +220,6 @@ module.exports = function(server){
 
                 }else if (MessageTypeId==3){
                     clientenav = clientes.get(0);
-                    
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
                     console.log(message[2]);
                     var Response = {
@@ -229,16 +228,21 @@ module.exports = function(server){
                         'boton': 'stationResponse'
                     };
                     clientenav.write(funciones.constructReply(Response, opCode));
-
-
+                }else if (MessageTypeId==4){
+                    clientenav = clientes.get(0);
+                    console.log('Se ha recibido un MessageTypeId igual a 4!, que significa algun error')
+                    console.log(message[2]);
+                    var Response = {
+                        'texto': JSON.stringify(message[2]),
+                        'tipo': 'recibidos',
+                        'boton': 'stationResponse'
+                    };
+                    clientenav.write(funciones.constructReply(Response, opCode));
                 }else{
                     console.log('Se ha recibido un mensaje desde navegador!')
-                    console.log('mensaje parseado en json: ');
                     console.log(message);
                     var stationId = message.stationId;
                     var stationClient = clientes.get(stationId);
-                    console.log('Este  es el cliente: ');
-                    //console.log(stationClient);
 
                     if(stationClient!=undefined){
                     
@@ -263,25 +267,96 @@ module.exports = function(server){
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='ChangeConfiguration'){
-                            PayloadRequest = {"reservationId": '1'};
+                            PayloadRequest = {"key": "AuthorizationCacheEnabled", "value": 'true'};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetCompositeSchedule'){
+                            PayloadRequest = {"connectorId": 3, "duration": 3600, 'chargingRateUnit': 'W'};
+                            var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='SendLocalList'){
+                            PayloadRequest = {
+                                "listVersion": 1,
+                                "localAuthorizationList": [
+                                    {
+                                        "idTag": "7240E49A",
+                                        "idTagInfo": 
+                                            {
+                                                "expiryDate": "2022-02-29T11:10:00.000Z",
+                                                "status": "Accepted"
+                                            }
+                                    }
+                                ],
+                                "updateType": "Differential"
+                            }
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='GetDiagnostics'){
                             PayloadRequest = {"location": uriFTP};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='ClearChargingProfile'){
+                            PayloadRequest = {};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetLocalListVersion'){
+                            PayloadRequest = {};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='SetChargingProfile'){
+                            PayloadRequest = {
+                                "connectorId": 1,
+                                "csChargingProfiles": {
+                                    "chargingProfileId": 1,
+                                    "transactionId": 1,
+                                    "stackLevel": 1,
+                                    "chargingProfilePurpose": "TxProfile",
+                                    "chargingProfileKind": "Absolute",
+                                    "recurrencyKind": "Daily",
+                                    "validFrom": '2022-02-28T17:10:00.000Z',
+                                    "validTo": '2022-02-28T17:20:00.000Z',
+                                    "chargingSchedule": {
+                                        "duration": 100,
+                                        "startSchedule": '2022-02-28T17:1:00.000Z',
+                                        "chargingRateUnit": "A",
+                                        "chargingSchedulePeriod": [{"startPeriod": 1, "limit": 0.5, "numberPhases": 3}],
+                                        "minChargingRate": 0.4
+                                    }
+                                }
+                            }
+                            
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='GetConfiguration'){
-                            PayloadRequest = {"key": ['SupportedFileTransferProtocols']};
+                            /*PayloadRequest = {"key": ['SupportedFileTransferProtocols', 
+                            'GetConfigurationMaxKeys',
+                            'MeterValuesSampledData',
+                            'NumberOfConnectors',
+                            'UnlockConnectorOnEVSideDisconnect',
+                            'LocalAuthListEnabled', 
+                            'ChargeProfileMaxStackLevel',
+                            'ChargingScheduleMaxPeriods',
+                            'ConnectorSwitch3to1PhaseSupported',
+                            'MaxChargingProfilesInstalled'
+                            ]};*/
+
+                            PayloadRequest = {"key": ['LocalPreAuthorize', 
+                            'LocalAuthorizeOffline',
+                            'AuthorizationCacheEnabled'
+                            ]} 
+
+                            
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else{
-                            clientenav = clientes.get(0);
+                            /*clientenav = clientes.get(0);
                             PayloadResponse = await ffsnav.funcionesNuevasNav(message, clientes)
                             console.log('                                            ');
                             console.log('El servidor respondes-------------------')
                             let CallResult = [CallResultId, UniqueId, PayloadResponse]; 
                             console.log(CallResult);
-                            socket.write(funciones.constructReply(CallResult, opCode));
+                            socket.write(funciones.constructReply(CallResult, opCode));*/
+                            console.log('La operacion OCPP solicitada por el navegador aun no ha sido implementada')
                         }
                     }else{
                         clientenav = clientes.get(0);
