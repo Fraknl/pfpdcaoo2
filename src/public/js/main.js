@@ -28,6 +28,39 @@ function getConfiguration(stationId){
 	ws.send(PayloadRequest);
 }
 
+<<<<<<< HEAD
+function ChangeAvailability(stationId, id){
+	//console.log('Hola');
+	/*
+	var checkBox= document.getElementById(id);
+	var idConector;
+	console.log('stationId: ' + stationId);
+	if(id=="CCS"){
+		idConector=1;
+
+
+	}else if(id=="Chademo"){
+
+		idConector=2;
+
+	}else if(id=="AC"){
+		idConector=3;
+	}
+	if(checkBox.checked==true){
+		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Operative","Conector":idConector,"stationId": stationId});
+		ws.send(PayloadRequest);
+	}
+	else{
+		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Inoperative","Conector":idConector, "stationId": stationId});
+		ws.send(PayloadRequest);
+	}
+	*/
+}
+
+
+
+
+=======
 function david(stationId){
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "ReserveNow", "stationId": stationId});
@@ -35,6 +68,7 @@ function david(stationId){
 	
 }
 
+>>>>>>> 5e28c75b3db10f13bdc652136e8ebac95aef895f
 function xhr(){
 	console.log('se llama a xhr')
 	const url = '/home/estaciones/urlprueba';
