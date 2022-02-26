@@ -135,6 +135,7 @@ module.exports = function(server){
             return;
         }; 
         
+        
         let query = 'SELECT id_estacion FROM estaciones WHERE codigo_estacion="' + url_est + '";';
         let estaciones = await pool.query(query);
         console.log('resultado sql de estaciones');
@@ -232,6 +233,20 @@ module.exports = function(server){
 
                     if(stationClient!=undefined){
 
+<<<<<<< HEAD
+                    }else if(message.tipo=='ReserveNow'){
+                        var stationId = message.stationId;
+                        console.log('Servidor recibe get diagnostics');
+                        console.log('Y el id de la estacion: ');
+                        console.log(stationId);
+                        var stationClient = clientes.get(stationId);
+                        //PayloadRequest = {"location": uri.toString()};
+                        PayloadRequest = {"connectorId": 1,"expiryDate":"2022-02-28T11:10:00.000Z","idTag":"7240E49A","reservationId":100};
+
+                        var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                        stationClient.write(funciones.constructReply(OIBCS, 0x1))
+
+=======
                         if(message.tipo=='acceptWsHandshake'){
                             console.log('navegador solicita aceptar la conexion')
                             var temporalClient = clientes.get('temporal');
@@ -270,6 +285,7 @@ module.exports = function(server){
                             console.log(CallResult);
                             socket.write(funciones.constructReply(CallResult, opCode));
                         }
+>>>>>>> ce1ddca2fbd316d0e43166a11df83403d18a7f24
                     }else{
                         clientenav = clientes.get(0);
                         var Response = {

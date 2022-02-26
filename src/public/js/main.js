@@ -28,6 +28,7 @@ function getConfiguration(stationId){
 	ws.send(PayloadRequest);
 }
 
+<<<<<<< HEAD
 function ChangeAvailability(stationId, id){
 	//console.log('Hola');
 	/*
@@ -59,6 +60,15 @@ function ChangeAvailability(stationId, id){
 
 
 
+=======
+function david(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ReserveNow", "stationId": stationId});
+	ws.send(PayloadRequest);
+	
+}
+
+>>>>>>> 5e28c75b3db10f13bdc652136e8ebac95aef895f
 function xhr(){
 	console.log('se llama a xhr')
 	const url = '/home/estaciones/urlprueba';
