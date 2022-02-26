@@ -219,8 +219,17 @@ module.exports = function(server){
                     
 
                 }else if (MessageTypeId==3){
+                    clientenav = clientes.get(0);
+                    
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
                     console.log(message[2]);
+                    var Response = {
+                        'texto': JSON.stringify(message[2]),
+                        'tipo': 'recibidos',
+                        'boton': 'stationResponse'
+                    };
+                    clientenav.write(funciones.constructReply(Response, opCode));
+
 
                 }else{
                     console.log('Se ha recibido un mensaje desde navegador!')
@@ -228,10 +237,11 @@ module.exports = function(server){
                     console.log(message);
                     var stationId = message.stationId;
                     var stationClient = clientes.get(stationId);
-                    console.log('Esto es cliente: ');
-                    console.log(stationClient);
+                    console.log('Este  es el cliente: ');
+                    //console.log(stationClient);
 
                     if(stationClient!=undefined){
+<<<<<<< HEAD
  
                     }else if(message.tipo=='ReserveNow'){
                         var stationId = message.stationId;
@@ -246,6 +256,9 @@ module.exports = function(server){
                         stationClient.write(funciones.constructReply(OIBCS, 0x1))
 
 
+=======
+                    
+>>>>>>> f2d17c43b2f509c074b069f46dedb19e63566ace
                         if(message.tipo=='acceptWsHandshake'){
                             console.log('navegador solicita aceptar la conexion')
                             var temporalClient = clientes.get('temporal');
@@ -254,9 +267,12 @@ module.exports = function(server){
                             response = responseHeaders1(acceptKey, protocol);
                             temporalClient.write(response.join('\r\n') + '\r\n\r\n' );
                             //temporalClient.write(funciones.constructReply(response, 0x1));
-                            
+                        }else if(message.tipo=='ReserveNow'){
+                            PayloadRequest = {"connectorId": 1,"expiryDate":"2022-02-28T11:10:00.000Z","idTag":"7240E49A","reservationId":100};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1))
                         }else if(message.tipo=='CancelReservation'){
-                            PayloadRequest = {"reservationId": '1'};
+                            PayloadRequest = {"reservationId": 100};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='ChangeAvailability'){
@@ -284,7 +300,10 @@ module.exports = function(server){
                             console.log(CallResult);
                             socket.write(funciones.constructReply(CallResult, opCode));
                         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> f2d17c43b2f509c074b069f46dedb19e63566ace
                     }else{
                         clientenav = clientes.get(0);
                         var Response = {
