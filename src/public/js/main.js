@@ -1,6 +1,7 @@
 const http = new XMLHttpRequest();
 var cuadro_opciones=document.getElementById("Cuadro_opciones");
 
+console.log('Esta es una linea para ver si funciona el pull de git');
 function confirmDelete(){
 	var contr;
 	contr=prompt('Por favor ingrese la contraseña de administración: ');
