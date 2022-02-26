@@ -1,13 +1,48 @@
 const http = new XMLHttpRequest();
+//var cuadro_opciones=document.getElementById("Cuadro_opciones");
 
-function confirmDelete(){
-	var contr;
-	contr=prompt('Por favor ingrese la contraseña de administración: ');
-	if (contr == 'contraadmin'){
-		return true; 
-	}else{
-		return false;
-	}
+
+function changeConfiguration(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ChangeConfiguration", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function setChargingProfile(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "SetChargingProfile", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+
+function clearChargingProfile(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ClearChargingProfile", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function getLocalListVersion(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetLocalListVersion", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function sendLocalList(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "SendLocalList", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function getCompositeSchedule(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetCompositeSchedule", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function cancelReservation(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "CancelReservation", "stationId": stationId, "reservationId": 1});
+	ws.send(PayloadRequest);
 }
 
 function getDiagnostics(stationId){
@@ -20,6 +55,71 @@ function getConfiguration(stationId){
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "GetConfiguration", "stationId": stationId});
 	ws.send(PayloadRequest);
+}
+
+/*
+function changeAvailability(stationId){
+	cuadro_opciones.innerHTML= "<div>"+
+	"<button onclick='cancelReservation(1)' class='btn btn-danger m-1'>Cancelar Reservacion</button>"+
+	"<button onclick='changeAvailability(1)' class='btn btn-info m-1'>Cambiar Diposnibilidad</button>"+
+	"<div>hola</div>"+
+	"<button onclick='changeConfiguration(1)' class='btn btn-warning m-1'>Cambiar Configuración</button>"+
+	"<button onclick='clearCache(1)' class='btn btn-success m-1'>Limpiar Caché</button>"+
+	"<button onclick='clearChargingProfile(1)' class='btn btn-primary m-1'>Limpiar Perfil de Carga</button>"+
+	"<button onclick='dataTransfer(1)' class='btn btn-secondary m-1'>Transferencia de Datos</button>"+
+	"<button onclick='getCompositeSchedule(1)' class='btn btn-light m-1'>Obtener Horario Compuesto</button>"+
+	"<button onclick='getConfiguration(1)' class='btn btn-dark m-1'>Obtener configuracion</button>"+
+	"<button onclick='getDiagnostics(1)' class='btn btn-muted m-1'>Pedir diagnostico</button>"+
+	"<button onclick='remoteStartTransaction(1)' class='btn btn-danger m-1'>Iniciar Transaccion Remota</button>"+
+	"<button onclick='remoteStopTransaction(1)' class='btn btn-info m-1'>Detener Transaccion Remota</button>"+
+	"<button onclick='getLocalLisVersion(1)' class='btn btn-warning m-1'>Obtener Version de Lista Local</button>"+
+	"<button onclick='reserveNow(1)' class='btn btn-success m-1'>Reservar Ahora</button>"+
+	"<button onclick='reset(1)' class='btn btn-primery m-1'>Resetear</button>"+
+	"<button onclick='sendLocalList(1)' class='btn btn-secondary m-1'>Enviar Lista Local</button>"+
+	"<button onclick='setChargningProfile(1)' class='btn btn-light m-1'>Establecer Perfil de Carga</button>"+
+	"<button onclick='getLocalLisVersion(1)' class='btn btn-dark m-1'>Obtener Version de Lista Local</button>"+
+	"<button onclick='triggerMessage(1)' class='btn btn-muted m-1'>Solicitar Operacion OCPP</button>"+
+	"<button onclick='unlockConector(1)' class='btn btn-danger m-1'>Desbloquear Conector</button>"+
+	"<button onclick='updateFirmware(1)' class='btn btn-info m-1'>Actualizar Firmware</button>"+
+"</div>";
+*/
+
+function ChangeAvailability(stationId, id){
+	//console.log('Hola');
+	/*
+	var checkBox= document.getElementById(id);
+	var idConector;
+	console.log('stationId: ' + stationId);
+	if(id=="CCS"){
+		idConector=1;
+
+
+	}else if(id=="Chademo"){
+
+		idConector=2;
+
+	}else if(id=="AC"){
+		idConector=3;
+	}
+	if(checkBox.checked==true){
+		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Operative","Conector":idConector,"stationId": stationId});
+		ws.send(PayloadRequest);
+	}
+	else{
+		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Inoperative","Conector":idConector, "stationId": stationId});
+		ws.send(PayloadRequest);
+	}
+	*/
+}
+
+
+
+
+function david(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ReserveNow", "stationId": stationId});
+	ws.send(PayloadRequest);
+	
 }
 
 function xhr(){
@@ -40,7 +140,7 @@ function fromStationsToRealTime(){
 }
 
 function toStationDetails(id){
-	//console.log('datos estacion: ');
+	console.log('datos estacion: ');
 	const url = '/home/estaciones/editar/'+id;
 	http.open("get", url);
 	http.send();
@@ -49,10 +149,10 @@ function toStationDetails(id){
 		var a = 1;
 		//console.log('Respuesta desde el server: ' + http.responseText);
 	}
-
 	document.getElementById('stationDetails').style.display = 'block';
 	document.getElementById('stationsDetails').style.display = 'none';
 }
+
 function toStationsDetails(){
 	document.getElementById('stationDetails').style.display = 'none';
 	document.getElementById('stationsDetails').style.display = 'block';

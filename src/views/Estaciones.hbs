@@ -104,14 +104,14 @@
             <div class="card-header text-center">
                 <h3 style="font-family: sans-serif;">Detalles de la estacion {{estacion.nombre_estacion}}</h3>
             </div>
-            <form action="/files" method="post" enctype="multipart/form-data">
+            <!--<form action="/files" method="post" enctype="multipart/form-data">
                 <input type="file" name="diagnostico">
                 <input type="submit" class="btn btn-success col-md-3"  value="Subir archivo">
-            </form>
+            </form>-->
             <!--<button class="btn btn-info col-md-3" onclick="getDiagnostics(1)">Obtener Diagnosticos modif</button>-->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4 text-center">
+                    <div class="col-md-2 text-center">
                         {{#if datosEstacion.nombre_foto}}
                         <img src="/images/estaciones/{{datosEstacion.nombre_foto}}" 
                         width="200px" height="400px" style="border: 1px solid; padding: 1px">
@@ -120,7 +120,7 @@
                         width="200px" height="400px" style="border: 1px solid; padding: 1px">
                         {{/if}}
                     </div>
-                    <div class="col-md-7 text-center" >
+                    <div class="col-md-5 text-center">
                         <div class="card" style="margin-bottom: 20px">
                             <div class="card-header">
                                 Detalles
@@ -131,7 +131,6 @@
                                     <span style="padding-right: 30px"><b>Código:</b> {{datosEstacion.codigo_estacion}}</span>
                                     <span style="padding: 3px"><b>Nombre:</b> {{datosEstacion.nombre_estacion}}</span>
                                 </div>
-                                
                             </div>
                         </div>
                         <div class="card" style="margin-bottom: 20px;">
@@ -146,7 +145,6 @@
                                     <label><b>Voltaje Nominal:  </b>{{datosEstacion.voltage_nominal}}</label><br>
                                 </div>
                                 <div class="col-md-6 text-center p-3">
-                                    
                                     <label><b>Voltaje Maximo:   </b>{{datosEstacion.voltage_maximo}}</label><br>
                                     <label><b>Corriente Nominal:</b> {{datosEstacion.corriente_nominal}}</label><br>
                                     <label><b>Corriente Maxima: </b> {{datosEstacion.corriente_maxima}}</label><br>
@@ -162,11 +160,57 @@
                             <em class="fa fa-pencil"></em> Editar</button>
                             <a  class="btn btn-warning" name="volver" 
                             href="/home/estaciones/transacciones/{{datosEstacion.id_estacion}}">
-                            
                             <em class="fa fa-pencil"></em> Historial de Cargas</a>
-                            <button onclick="getDiagnostics(1)" class="btn btn-danger">Pedir diagnostico</button>
-                            <button onclick="getConfiguration(1)" class="btn btn-danger">Obtener configuracion</button>
 
+                            <button onclick="getDiagnostics()" class="btn btn-danger">Pedir diagnostico</button>
+                            <button onclick="david(1)" class="btn btn-danger">boton david</button>
+
+                        </div>
+                    <!--</div> 
+
+                            <button onclick="getDiagnostics()" class="btn btn-danger">Pedir diagnostico</button>
+                            <button onclick="david(1)" class="btn btn-danger">boton david</button>
+                        </div>
+                    </div> -->
+
+                    <div class="col-md-5">
+                        <div class="card" style="margin-bottom: 20px">
+                            <div class="card-header">
+                                <b>Operaciones OCPP</b>
+                            </div>
+                            
+                            <div class="card-body" id="Cuadro_opciones">
+                                <div>
+                                    <button onclick="cancelReservation(1)" class="btn btn-danger m-1">Cancelar Reservacion</button>
+                                    <button onclick="changeAvailability(1)" class="btn btn-info m-1">Cambiar Diposnibilidad</button>
+                                    <button onclick="changeConfiguration(1)" class="btn btn-warning m-1">Cambiar Configuración</button>
+                                    <button onclick="clearCache(1)" class="btn btn-success m-1">Limpiar Caché</button>
+                                    <button onclick="clearChargingProfile(1)" class="btn btn-primary m-1">Limpiar Perfil de Carga</button>
+                                    <button onclick="dataTransfer(1)" class="btn btn-secondary m-1">Transferencia de Datos</button>
+                                    <button onclick="getCompositeSchedule(1)" class="btn btn-light m-1">Obtener Horario Compuesto</button>
+                                    <button onclick="getConfiguration(1)" class="btn btn-dark m-1">Obtener configuracion</button>
+                                    <button onclick="getDiagnostics(1)" class="btn btn-muted m-1">Pedir diagnostico</button>
+                                    <button onclick="remoteStartTransaction(1)" class="btn btn-danger m-1">Iniciar Transaccion Remota</button>
+                                    <button onclick="remoteStopTransaction(1)" class="btn btn-info m-1">Detener Transaccion Remota</button>
+                                    <button onclick="getLocalListVersion(1)" class="btn btn-warning m-1">Obtener Version de Lista Local</button>
+                                    <button onclick="reserveNow(1)" class="btn btn-success m-1">Reservar Ahora</button>
+                                    <button onclick="reset(1)" class="btn btn-primery m-1">Resetear</button>
+                                    <button onclick="sendLocalList(1)" class="btn btn-secondary m-1">Enviar Lista Local</button>
+                                    <button onclick="setChargingProfile(1)" class="btn btn-light m-1">Establecer Perfil de Carga</button>
+                                    <button onclick="triggerMessage(1)" class="btn btn-muted m-1">Solicitar Operacion OCPP</button>
+                                    <button onclick="unlockConector(1)" class="btn btn-danger m-1">Desbloquear Conector</button>
+                                    <button onclick="updateFirmware(1)" class="btn btn-info m-1">Actualizar Firmware</button>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div>
+                                    <b>Mensaje desde la estacion</b>
+                                </div>
+                                <div id="stationResponse">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

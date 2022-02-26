@@ -228,6 +228,18 @@ async function RemoteStartTransactionReq(Payload){
     return [PayloadResponse];
  }
 
+ function FirmwareStatusNotificationResponse(Payload){
+    PayloadResponse = {};
+    //PayloadResponseNav = {};
+   return [PayloadResponse];
+}
+
+function DataTransferResponse(Payload){
+    PayloadResponse = {"status":"Accepted","data":"bkhg"};
+    //PayloadResponseNav = {};
+   return [PayloadResponse];
+}
+
 
 
 async function funcionesnuevas (message){
@@ -257,7 +269,14 @@ async function funcionesnuevas (message){
         PayloadResponse = StopTransactionConf(Payload)
     }else if(Action=='DiagnosticsStatusNotification') {
         PayloadResponse = DiagnosticsStatusNotificationResponse(Payload);
-    }else{
+    }else if(Action=='FirmwareStatusNotification') {
+        PayloadResponse = FirmwareStatusNotificationResponse(Payload);
+    }else if(Action=='DataTransfer') {
+        PayloadResponse = DataTransferResponse(Payload);
+    }
+    
+    
+    else{
         //OPERACIONES INICIADAS DESDE EL NAVEGADOR WEB
         if(Action=='RemoteStartTransaction'){
             PayloadResponse = StopTransactionConf(Payload)

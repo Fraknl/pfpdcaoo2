@@ -8,10 +8,43 @@ var clientes = new Map();
 const ffs = require('./ocppFunctions');
 const ffsnav = require('./ocppFunctionsServer');
 const path = require('path');
+const { networkInterfaces } = require('os');
 
+const nets = networkInterfaces();
+const results = Object.create(null); // Or just '{}', an empty object
 
+for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+        // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+        if (net.family === 'IPv4' && !net.internal) {
+            if (!results[name]) {
+                results[name] = [];
+            }
+            results[name].push(net.address);
+        }
+    }
+}
+
+var miIp = "";
+for(const prop in results){
+    console.log(prop);
+    if(prop=='Wi-Fi'){
+        miIp = results[prop][0];
+    }else if(prop=='Ethernet'){
+        miIp = results[prop][0];
+    }
+}
+
+console.log('Esta es mi IP: ');
+console.log(miIp);
 
 const FtpSrv = require('ftp-srv');
+
+
+/*const miIp = '192.168.222.201';
+const miIpLocal = '192.168.1.20';*/
+//miIp = '192.168.222.201';
+//const uriFTP = 'ftp://'+miIp+':21/';
 const uriFTP = 'ftp://192.168.222.201:21/';
 const ftpServer = new FtpSrv({'url': uriFTP,
 'greeting': 'Saludo de bienvenida desde servidor OCPP'});
@@ -19,7 +52,10 @@ const blacklist = [];
 const whitelist = ['DIR', 'PWD', 'CWD', 'TYPE', 'PASV', 'PORT', 'LIST', 'STOR'];
 
 ftpServer.on('login', (data, resolve, reject) => {
+
     console.log('login en servidor FTP')
+
+    console.log(' ha habido un login')
     var username = data.username;
     var password = data.password;
         const rutaFTP = '/src/public/diagnostics/';
@@ -101,6 +137,7 @@ module.exports = function(server){
             return;
         }; 
         
+        
         let query = 'SELECT id_estacion FROM estaciones WHERE codigo_estacion="' + url_est + '";';
         let estaciones = await pool.query(query);
         console.log('resultado sql de estaciones');
@@ -126,20 +163,11 @@ module.exports = function(server){
 
             return;
         }
-        
-
      
         console.log('Estado del socket: ' + socket.readyState);
         if(socket.readyState=='open'){
             clientes.set(clave, socket);
         };
-
-        /*if(socket.readyState=='close'){
-            console.log("El cliente cerró la conexión");
-        };
-        if(socket.readyState=='closed'){
-            console.log("El cliente closed la conexión");
-        };*/
 
         socket.on("data", async(buffer) => {
             
@@ -153,15 +181,12 @@ module.exports = function(server){
             
             console.log('                                      ');
             console.log('El servidor ha recibido datos----------------------------------------------------------------------');
-            console.log('Tipo de dato: ' + typeof(message));
-            console.log(message);
             const opCode = lista[1]; 
             const CallId = 2;       
             const CallResultId = 3;
             const CallErrorId = 4;
 
             if (opCode === 0x1 ) {
-                console.log('codigo de operacion 1')
                 const MessageTypeId = message[0];
                 const UniqueId = message[1];
                 var PayloadResponse;
@@ -171,17 +196,10 @@ module.exports = function(server){
                     Respuestas = await ffs.funcionesnuevas(message);
                     PayloadResponse = Respuestas[0];
                     PayloadResponseNav = Respuestas[1];
-                    
-                    /*if(Respuestas.length==2){
-                        PayloadResponseNav = Respuestas[1];
-                    }*/    
-
                     console.log('                                            ');
-                    
                     let CallResult = [CallResultId, UniqueId, PayloadResponse]; 
                     console.log('Respuesta a enviar al punto de carga: ')
                     console.log(CallResult);
-                    
                     socket.write(funciones.constructReply(CallResult, opCode));
 
                     /*************Respuesta para navegador****************/
@@ -200,62 +218,157 @@ module.exports = function(server){
                     
 
                 }else if (MessageTypeId==3){
+                    clientenav = clientes.get(0);
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
                     console.log(message[2]);
-
+                    var Response = {
+                        'texto': JSON.stringify(message[2]),
+                        'tipo': 'recibidos',
+                        'boton': 'stationResponse'
+                    };
+                    clientenav.write(funciones.constructReply(Response, opCode));
+                }else if (MessageTypeId==4){
+                    clientenav = clientes.get(0);
+                    console.log('Se ha recibido un MessageTypeId igual a 4!, que significa algun error')
+                    console.log(message[2]);
+                    var Response = {
+                        'texto': JSON.stringify(message[2]),
+                        'tipo': 'recibidos',
+                        'boton': 'stationResponse'
+                    };
+                    clientenav.write(funciones.constructReply(Response, opCode));
                 }else{
                     console.log('Se ha recibido un mensaje desde navegador!')
-                    //message = JSON.stringify(message);
-                    console.log('mensaje parseado en json: ');
                     console.log(message);
-                    //console.log(Object.values(message))                    
-                    if(message.tipo=='acceptWsHandshake'){
-                        console.log('navegador solicita aceptar la conexion')
-                        var temporalClient = clientes.get('temporal');
-                        //var req = message.req;
-                        const acceptKey = message.acceptKey;
-                        const protocol = message.protocol;
-                        response = responseHeaders1(acceptKey, protocol);
-                        //clave = estaciones[0].id_estacion;
-                        temporalClient.write(response.join('\r\n') + '\r\n\r\n' );
-                        //temporalClient.write(funciones.constructReply(response, 0x1));
-                        
-                    }else if(message.tipo=='GetDiagnostics'){
-                        var stationId = message.stationId;
-                        console.log('Servidor recibe get diagnostics');
-                        console.log('Y el id de la estacion: ');
-                        console.log(stationId);
-                        var stationClient = clientes.get(stationId);
-                        //console.log(clientes);
-                        //PayloadRequest = {"location": uri.toString()};
-                        PayloadRequest = {"location": uriFTP};
+                    var stationId = message.stationId;
+                    var stationClient = clientes.get(stationId);
 
-                        var OIBCS = [2, '10', message.tipo, PayloadRequest];
-                        stationClient.write(funciones.constructReply(OIBCS, 0x1))
+                    if(stationClient!=undefined){
 
-                    }else if(message.tipo=='GetConfiguration'){
-                        var stationId = message.stationId;
-                        console.log('Servidor recibe get configuration');
-                        var stationClient = clientes.get(stationId);
-                        //PayloadRequest = {"location": uri.toString()};
-                        PayloadRequest = {"key": ['SupportedFileTransferProtocols']};
-                        console.log('payload: ', PayloadRequest)
+                        if(message.tipo=='acceptWsHandshake'){
+                            console.log('navegador solicita aceptar la conexion')
+                            var temporalClient = clientes.get('temporal');
+                            const acceptKey = message.acceptKey;
+                            const protocol = message.protocol;
+                            response = responseHeaders1(acceptKey, protocol);
+                            temporalClient.write(response.join('\r\n') + '\r\n\r\n' );
+                            //temporalClient.write(funciones.constructReply(response, 0x1));
+                        }else if(message.tipo=='ReserveNow'){
+                            PayloadRequest = {"connectorId": 1,"expiryDate":"2022-02-28T11:10:00.000Z","idTag":"7240E49A","reservationId":100};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1))
+                        }else if(message.tipo=='CancelReservation'){
+                            PayloadRequest = {"reservationId": 100};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='ChangeAvailability'){
+                            PayloadRequest = {"reservationId": '1'};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='ChangeConfiguration'){
+                            PayloadRequest = {"key": "AuthorizationCacheEnabled", "value": 'true'};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetCompositeSchedule'){
+                            PayloadRequest = {"connectorId": 3, "duration": 3600, 'chargingRateUnit': 'W'};
+                            var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='SendLocalList'){
+                            PayloadRequest = {
+                                "listVersion": 1,
+                                "localAuthorizationList": [
+                                    {
+                                        "idTag": "7240E49A",
+                                        "idTagInfo": 
+                                            {
+                                                "expiryDate": "2022-02-29T11:10:00.000Z",
+                                                "status": "Accepted"
+                                            }
+                                    }
+                                ],
+                                "updateType": "Differential"
+                            }
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetDiagnostics'){
+                            PayloadRequest = {"location": uriFTP};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='ClearChargingProfile'){
+                            PayloadRequest = {};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetLocalListVersion'){
+                            PayloadRequest = {};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='SetChargingProfile'){
+                            PayloadRequest = {
+                                "connectorId": 1,
+                                "csChargingProfiles": {
+                                    "chargingProfileId": 1,
+                                    "transactionId": 1,
+                                    "stackLevel": 1,
+                                    "chargingProfilePurpose": "TxProfile",
+                                    "chargingProfileKind": "Absolute",
+                                    "recurrencyKind": "Daily",
+                                    "validFrom": '2022-02-28T17:10:00.000Z',
+                                    "validTo": '2022-02-28T17:20:00.000Z',
+                                    "chargingSchedule": {
+                                        "duration": 100,
+                                        "startSchedule": '2022-02-28T17:1:00.000Z',
+                                        "chargingRateUnit": "A",
+                                        "chargingSchedulePeriod": [{"startPeriod": 1, "limit": 0.5, "numberPhases": 3}],
+                                        "minChargingRate": 0.4
+                                    }
+                                }
+                            }
+                            
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='GetConfiguration'){
+                            /*PayloadRequest = {"key": ['SupportedFileTransferProtocols', 
+                            'GetConfigurationMaxKeys',
+                            'MeterValuesSampledData',
+                            'NumberOfConnectors',
+                            'UnlockConnectorOnEVSideDisconnect',
+                            'LocalAuthListEnabled', 
+                            'ChargeProfileMaxStackLevel',
+                            'ChargingScheduleMaxPeriods',
+                            'ConnectorSwitch3to1PhaseSupported',
+                            'MaxChargingProfilesInstalled'
+                            ]};*/
 
-                        var OIBCS = [2, '10', message.tipo, PayloadRequest];
-                        stationClient.write(funciones.constructReply(OIBCS, 0x1))
+                            PayloadRequest = {"key": ['LocalPreAuthorize', 
+                            'LocalAuthorizeOffline',
+                            'AuthorizationCacheEnabled'
+                            ]}  
+
+                            
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else{
+                            /*clientenav = clientes.get(0);
+                            PayloadResponse = await ffsnav.funcionesNuevasNav(message, clientes)
+                            console.log('                                            ');
+                            console.log('El servidor respondes-------------------')
+                            let CallResult = [CallResultId, UniqueId, PayloadResponse]; 
+                            console.log(CallResult);
+                            socket.write(funciones.constructReply(CallResult, opCode));*/
+                            console.log('La operacion OCPP solicitada por el navegador aun no ha sido implementada')
+                        }
 
                     }else{
-                        //console.log('Estos son los clientes conectados: ');
-                        //console.log(clientes);
                         clientenav = clientes.get(0);
-                        PayloadResponse = await ffsnav.funcionesNuevasNav(message, clientes)
-                        console.log('                                            ');
-                        console.log('El servidor respondes-------------------')
-                        let CallResult = [CallResultId, UniqueId, PayloadResponse]; 
-                        console.log(CallResult);
-                        socket.write(funciones.constructReply(CallResult, opCode));
+                        var Response = {
+                            'texto': 'No hay una estacion conectada',
+                            'tipo': 'recibidos',
+                            'boton': 'stationResponse'
+                        };
+                        clientenav.write(funciones.constructReply(Response, opCode));
                     }
                 };
+
             }else if(opCode === 0x9){
                 console.log('Entra a op9')
                 console.log('Tipo de dato: ping');

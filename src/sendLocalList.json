@@ -1,0 +1,14 @@
+{
+    "listVersion": 1,
+    "localAuthorizationList": [
+        {
+            "idTag": "7240E49A",
+            "idTagInfo": 
+                {
+                    "expiryDate": "date-time",
+                    "status": "Accepted"
+                }
+        }
+    ],
+    "updateType": "Differential"
+}
