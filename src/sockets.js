@@ -12,24 +12,19 @@ const path = require('path');
 
 
 const FtpSrv = require('ftp-srv');
-const uriFTP = 'ftp://192.168.222.201:3000/';
+const uriFTP = 'ftp://192.168.222.201:21/';
 const ftpServer = new FtpSrv({'url': uriFTP,
 'greeting': 'Saludo de bienvenida desde servidor OCPP'});
 const blacklist = [];
 const whitelist = ['DIR', 'PWD', 'CWD', 'TYPE', 'PASV', 'PORT', 'LIST', 'STOR'];
 
 ftpServer.on('login', (data, resolve, reject) => {
+    console.log('login en servidor FTP')
     var username = data.username;
     var password = data.password;
-    //if(username=='admin' && password=='ftp123'){
-        //console.log('Credenciales FTP correctas')
         const rutaFTP = '/src/public/diagnostics/';
         const res = {'cwd': rutaFTP, 'blacklist': blacklist, 'whitelist': whitelist}
-        resolve(res);
-    //}
-    /*else{
-        reject();
-    }*/
+        resolve();
     
  });
 
