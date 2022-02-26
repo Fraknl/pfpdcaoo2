@@ -17,6 +17,13 @@ function getDiagnostics(stationId){
 	
 }
 
+function david(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ReserveNow", "stationId": stationId});
+	ws.send(PayloadRequest);
+	
+}
+
 function xhr(){
 	console.log('se llama a xhr')
 	const url = '/home/estaciones/urlprueba';
