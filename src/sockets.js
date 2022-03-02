@@ -262,7 +262,7 @@ module.exports = function(server){
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='ChangeAvailability'){
-                            PayloadRequest = {"reservationId": '1'};
+                            PayloadRequest = {"connectorId":message.Conector, "type":message.Estado};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='ChangeConfiguration'){
@@ -271,6 +271,9 @@ module.exports = function(server){
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='GetCompositeSchedule'){
                             PayloadRequest = {"connectorId": 3, "duration": 3600, 'chargingRateUnit': 'W'};
+                            var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
+                        }else if(message.tipo=='UnlockConnector'){
+                            PayloadRequest = {"connectorId":message.Conector};
                             var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='SendLocalList'){

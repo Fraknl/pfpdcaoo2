@@ -1,5 +1,5 @@
 const http = new XMLHttpRequest();
-//var cuadro_opciones=document.getElementById("Cuadro_opciones");
+
 
 
 function changeConfiguration(stationId){
@@ -57,36 +57,27 @@ function getConfiguration(stationId){
 	ws.send(PayloadRequest);
 }
 
-/*
-function changeAvailability(stationId){
-	cuadro_opciones.innerHTML= "<div>"+
-	"<button onclick='cancelReservation(1)' class='btn btn-danger m-1'>Cancelar Reservacion</button>"+
-	"<button onclick='changeAvailability(1)' class='btn btn-info m-1'>Cambiar Diposnibilidad</button>"+
-	"<div>hola</div>"+
-	"<button onclick='changeConfiguration(1)' class='btn btn-warning m-1'>Cambiar Configuración</button>"+
-	"<button onclick='clearCache(1)' class='btn btn-success m-1'>Limpiar Caché</button>"+
-	"<button onclick='clearChargingProfile(1)' class='btn btn-primary m-1'>Limpiar Perfil de Carga</button>"+
-	"<button onclick='dataTransfer(1)' class='btn btn-secondary m-1'>Transferencia de Datos</button>"+
-	"<button onclick='getCompositeSchedule(1)' class='btn btn-light m-1'>Obtener Horario Compuesto</button>"+
-	"<button onclick='getConfiguration(1)' class='btn btn-dark m-1'>Obtener configuracion</button>"+
-	"<button onclick='getDiagnostics(1)' class='btn btn-muted m-1'>Pedir diagnostico</button>"+
-	"<button onclick='remoteStartTransaction(1)' class='btn btn-danger m-1'>Iniciar Transaccion Remota</button>"+
-	"<button onclick='remoteStopTransaction(1)' class='btn btn-info m-1'>Detener Transaccion Remota</button>"+
-	"<button onclick='getLocalLisVersion(1)' class='btn btn-warning m-1'>Obtener Version de Lista Local</button>"+
-	"<button onclick='reserveNow(1)' class='btn btn-success m-1'>Reservar Ahora</button>"+
-	"<button onclick='reset(1)' class='btn btn-primery m-1'>Resetear</button>"+
-	"<button onclick='sendLocalList(1)' class='btn btn-secondary m-1'>Enviar Lista Local</button>"+
-	"<button onclick='setChargningProfile(1)' class='btn btn-light m-1'>Establecer Perfil de Carga</button>"+
-	"<button onclick='getLocalLisVersion(1)' class='btn btn-dark m-1'>Obtener Version de Lista Local</button>"+
-	"<button onclick='triggerMessage(1)' class='btn btn-muted m-1'>Solicitar Operacion OCPP</button>"+
-	"<button onclick='unlockConector(1)' class='btn btn-danger m-1'>Desbloquear Conector</button>"+
-	"<button onclick='updateFirmware(1)' class='btn btn-info m-1'>Actualizar Firmware</button>"+
-"</div>";
-*/
 
-function ChangeAvailability(stationId, id){
+
+function buttons_changeAvailability(){
+	ventana_configuracion.innerHTML= "<div class='custom-control custom-switch'>"+
+	"<input type='checkbox' class='custom-control-input' id='CCS' onchange='ChangeAvailability(1,this.id)'>"+
+	"<label class='custom-control-label' for='CCS'>Conetor CCS</label> &nbsp;"+ 
+"</div>"+
+"<div class='custom-control custom-switch'>"+
+"	<input type='checkbox' class='custom-control-input' id='Chademo' onchange='ChangeAvailability(1,this.id)'>"+
+	"<label class='custom-control-label' for='Chademo'>Conetor Chademo</label>&nbsp;"+ 
+"</div>"+
+"<div class='custom-control custom-switch'>"+
+	"<input type='checkbox' class='custom-control-input' id='AC' onchange='ChangeAvailability(1,this.id)'>"+
+	"<label class='custom-control-label' for='AC'>Conetor AC</label>&nbsp;"+
+"</div>"
+}
+
+
+function ChangeAvailability(stationId,id){
 	//console.log('Hola');
-	/*
+	
 	var checkBox= document.getElementById(id);
 	var idConector;
 	console.log('stationId: ' + stationId);
@@ -109,9 +100,44 @@ function ChangeAvailability(stationId, id){
 		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Inoperative","Conector":idConector, "stationId": stationId});
 		ws.send(PayloadRequest);
 	}
-	*/
+	
 }
 
+function buttons_unlockConnector(){
+	ventana_configuracion.innerHTML=
+"<div style='margin-top:10px'>"+
+	"<label>Conector CCS</label>"+	
+	"<button id='UnCCS' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
+"</div>"+
+"<div style='margin-top:10px'>"+
+	"<label>Conector Chademo</label>"+
+	"<button  id='UnChademo' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
+"</div>"+
+"<div style='margin-top:10px'>"+
+	"<label>Conector AC</label>"+
+	"<button id='UnAC' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
+"</div>"
+}
+
+function UnlockConnector(stationId, id){
+	//var conectorbutton= document.getElementById(id).id;
+	var idConector;
+	console.log('stationId: ' + stationId);
+	if(id=="UnCCS"){
+		idConector=1;
+
+
+	}else if(id=="UnChademo"){
+
+		idConector=2;
+
+	}else if(id=="UnAC"){
+		idConector=3;
+	}
+	var PayloadRequest = JSON.stringify({"tipo": "UnlockConnector","Conector":idConector,"stationId": stationId});
+	ws.send(PayloadRequest);
+
+}
 
 
 

@@ -66,3 +66,22 @@
     text-align: center;
 }
 
+#ventana_configuracion{
+    
+    /*border: black 5px solid;*/
+    position:relative;
+    bottom:950px;
+    left:375px;
+
+    width:450px;
+    height:925px;
+}
+
+#contenedort{
+
+    /*border: yellow 5px solid;*/
+    width:900px;
+    height:1100px;
+
+}
+
