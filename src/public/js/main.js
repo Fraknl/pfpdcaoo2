@@ -1,15 +1,42 @@
 const http = new XMLHttpRequest();
-var cuadro_opciones=document.getElementById("Cuadro_opciones");
+//var cuadro_opciones=document.getElementById("Cuadro_opciones");
 
-console.log('Esta es una linea para ver si funciona el pull de git');
-function confirmDelete(){
-	var contr;
-	contr=prompt('Por favor ingrese la contraseña de administración: ');
-	if (contr == 'contraadmin'){
-		return true; 
-	}else{
-		return false;
-	}
+
+function changeConfiguration(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ChangeConfiguration", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function setChargingProfile(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "SetChargingProfile", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+
+function clearChargingProfile(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ClearChargingProfile", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function getLocalListVersion(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetLocalListVersion", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function sendLocalList(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "SendLocalList", "stationId": stationId});
+	ws.send(PayloadRequest);
+}
+
+function getCompositeSchedule(stationId){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "GetCompositeSchedule", "stationId": stationId});
+	ws.send(PayloadRequest);
 }
 
 function cancelReservation(stationId){
@@ -29,6 +56,8 @@ function getConfiguration(stationId){
 	var PayloadRequest = JSON.stringify({"tipo": "GetConfiguration", "stationId": stationId});
 	ws.send(PayloadRequest);
 }
+
+/*
 function changeAvailability(stationId){
 	cuadro_opciones.innerHTML= "<div>"+
 	"<button onclick='cancelReservation(1)' class='btn btn-danger m-1'>Cancelar Reservacion</button>"+
@@ -53,12 +82,9 @@ function changeAvailability(stationId){
 	"<button onclick='unlockConector(1)' class='btn btn-danger m-1'>Desbloquear Conector</button>"+
 	"<button onclick='updateFirmware(1)' class='btn btn-info m-1'>Actualizar Firmware</button>"+
 "</div>";
+*/
 
-
-<<<<<<< HEAD
-=======
 function ChangeAvailability(stationId, id){
->>>>>>> 5caad7ffd79ac5da4500b220ebc9c8a63158ae53
 	//console.log('Hola');
 	/*
 	var checkBox= document.getElementById(id);
@@ -89,8 +115,6 @@ function ChangeAvailability(stationId, id){
 
 
 
-<<<<<<< HEAD
-=======
 function david(stationId){
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "ReserveNow", "stationId": stationId});
@@ -98,7 +122,6 @@ function david(stationId){
 	
 }
 
->>>>>>> 5caad7ffd79ac5da4500b220ebc9c8a63158ae53
 function xhr(){
 	console.log('se llama a xhr')
 	const url = '/home/estaciones/urlprueba';
@@ -117,7 +140,7 @@ function fromStationsToRealTime(){
 }
 
 function toStationDetails(id){
-	//console.log('datos estacion: ');
+	console.log('datos estacion: ');
 	const url = '/home/estaciones/editar/'+id;
 	http.open("get", url);
 	http.send();

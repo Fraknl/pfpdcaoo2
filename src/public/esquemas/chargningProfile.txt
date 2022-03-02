@@ -1,0 +1,21 @@
+{
+    "connectorId": 1
+    "csChargingProfiles": {
+            "chargingProfileId": 1
+            "transactionId": 1
+            "stackLevel": 1
+            "chargingProfilePurpose": "TxProfile"
+            "chargingProfileKind": "Absolute",
+            "recurrencyKind": "Daily",
+            "validFrom": desde
+            "validTo": hasta
+            "chargingSchedule": {
+                "duration": 100
+                "startSchedule": inicio
+                "chargingRateUnit": "A",
+                "chargingSchedulePeriod": [{"startPeriod": 1, "limit": 0.5, "numberPhases": 3}]
+                "minChargingRate": 0.4
+            }
+        }
+    }
+}
