@@ -52,6 +52,34 @@ function getDiagnostics(stationId){
 }
 
 function getConfiguration(stationId){
+	ventana_configuracion.innerHTML=
+	"<div><label>AllowOfflineTxForUnknownId</label></div>"+
+	"<div><label>AuthorizationCacheEnabled</label></div>"+
+	"<div><label>AuthorizeRemoteTxRequests</label></div>"+
+	"<div><label>ClockAlignedDataInterval</label></div>"+
+	"<div><label>ConnectionTimeOut</label></div>"+
+	"<div><label>ConnectorPhaseRotation</label></div>"+
+	"<div><label>GetConfigurationMaxKeys</label></div>"+
+	"<div><label>HeartbeatInterval</label></div>"+
+	"<div><label>LocalAuthorizeOffline</label></div>"+
+	"<div><label>LocalPreAuthorize</label></div>"+
+	"<div><label>MeterValuesAlignedData</label></div>"+
+	"<div><label>MeterValuesSampledData</label></div>"+
+	"<div><label>MeterValueSampleInterval</label></div>"+
+	"<div><label>NumberOfConnectors</label></div>"+
+	"<div><label>StopTransactionOnEVSideDisconnect</label></div>"+
+	"<div><label>StopTransactionOnInvalidId</label></div>"+
+	"<div><label>StopTxnSampledData</label></div>"+
+	"<div><label>TransactionMessageRetryInterval</label></div>"+
+	"<div><label>WebSocketPingInterval</label></div>"+
+	"<div><label>LocalAuthListMaxLength</label></div>"+
+	"<div><label>SendLocalListMaxLength</label></div>"+
+	"<div><label>ReserveConnectorZeroSupported</label></div>";
+	//"<div><label>ConnectorPhaseRotation</label></div>"+
+	//"<div><label>ConnectorPhaseRotation</label></div>"+
+	//"<div><label>ConnectorPhaseRotation</label></div>"+
+	//"<div><label>ConnectorPhaseRotation</label></div>"
+	
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "GetConfiguration", "stationId": stationId});
 	ws.send(PayloadRequest);
@@ -62,15 +90,15 @@ function getConfiguration(stationId){
 function buttons_changeAvailability(){
 	ventana_configuracion.innerHTML= "<div class='custom-control custom-switch'>"+
 	"<input type='checkbox' class='custom-control-input' id='CCS' onchange='ChangeAvailability(1,this.id)'>"+
-	"<label class='custom-control-label' for='CCS'>Conetor CCS</label> &nbsp;"+ 
+	"<label class='custom-control-label' for='CCS'>Conector CCS</label> &nbsp;"+ 
 "</div>"+
 "<div class='custom-control custom-switch'>"+
 "	<input type='checkbox' class='custom-control-input' id='Chademo' onchange='ChangeAvailability(1,this.id)'>"+
-	"<label class='custom-control-label' for='Chademo'>Conetor Chademo</label>&nbsp;"+ 
+	"<label class='custom-control-label' for='Chademo'>Conector Chademo</label>&nbsp;"+ 
 "</div>"+
 "<div class='custom-control custom-switch'>"+
 	"<input type='checkbox' class='custom-control-input' id='AC' onchange='ChangeAvailability(1,this.id)'>"+
-	"<label class='custom-control-label' for='AC'>Conetor AC</label>&nbsp;"+
+	"<label class='custom-control-label' for='AC'>Conector AC</label>&nbsp;"+
 "</div>"
 }
 
@@ -104,6 +132,7 @@ function ChangeAvailability(stationId,id){
 }
 
 function buttons_unlockConnector(){
+	
 	ventana_configuracion.innerHTML=
 "<div style='margin-top:10px'>"+
 	"<label>Conector CCS</label>"+	
@@ -138,6 +167,21 @@ function UnlockConnector(stationId, id){
 	ws.send(PayloadRequest);
 
 }
+/*
+function buttons_unlockConnector(){
+	var currentDate = new Date();
+
+	ventana_configuracion.innerHTML=
+	"<p id='parrafo_prueba'></p>"
+"<input type='date' id='start' name='trip-start'"+
+       "value='2018-07-22'"+
+       "min='2018-01-01' max='2018-12-31'>";
+	   parrafo_prueba.innerHTML=currentDate;
+}
+
+*/
+
+
 
 
 

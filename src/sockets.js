@@ -342,14 +342,64 @@ module.exports = function(server){
                             'MaxChargingProfilesInstalled'
                             ]};*/
 
-                            PayloadRequest = {"key": ['LocalPreAuthorize', 
-                            'LocalAuthorizeOffline',
-                            'AuthorizationCacheEnabled'
+                            //PayloadRequest = {"key": ['LocalPreAuthorize', 
+                            //'LocalAuthorizeOffline',
+                            //'AuthorizationCacheEnabled'
+                            //]}  
+                             PayloadRequest = {"key": 
+                             [  'AllowOfflineTxForUnknownId', //si contiene
+                                'AuthorizationCacheEnabled',
+                                'AuthorizeRemoteTxRequests',
+                                //'BlinkRepeat',
+                                'ClockAlignedDataInterval',
+                                'ConnectionTimeOut',
+                                'ConnectorPhaseRotation',
+                                //'ConnectorPhaseRotationMaxLength',
+                                'GetConfigurationMaxKeys',
+                                'HeartbeatInterval',
+                                //'LightIntensity',
+                                'LocalAuthorizeOffline',
+                                'LocalPreAuthorize', 
+                                //'MaxEnergyOnInvalidId',
+                                'MeterValuesAlignedData',
+                                //'MeterValuesAlignedDataMaxLength',
+                                'MeterValuesSampledData',
+                                //'MeterValuesSampledDataMaxLength',
+                                'MeterValueSampleInterval',
+                                //'MinimumStatusDuration',
+                                'NumberOfConnectors',
+                                //'ResetRetries',
+                                'StopTransactionOnEVSideDisconnect',
+                                'StopTransactionOnInvalidId',
+                                //'StopTxnAlignedData',
+                                //'StopTxnAlignedDataMaxLength',
+                                'StopTxnSampledData',
+                                //'StopTxnSampledDataMaxLength',
+                                //'SupportedFeatureProfiles'//error
+                                //'SupportedFeatureProfilesMaxLength',
+                                //'TransactionMessageAttempts'
+                                'TransactionMessageRetryInterval',
+                                //'UnlockConnectorOnEVSideDisconnect', //error
+                                //'WebSocketPingInterval' //error
+                                //'LocalAuthListEnabled' //error
+                                
+                                //'LocalAuthListMaxLength' // si funciona
+                                //'SendLocalListMaxLength'// si funciona
+                                //'ReserveConnectorZeroSupported' //si funciona
+                                //'ChargeProfileMaxStackLevel'
+                                //'ChargingScheduleAllowedChargingRateUnit'//error
+                                //'ChargingScheduleMaxPeriods'
+                                //'ConnectorSwitch3to1PhaseSupported' //error
+                                //'MaxChargingProfilesInstalled' //error
+
                             ]}  
 
                             
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
+
+
                         }else{
                             /*clientenav = clientes.get(0);
                             PayloadResponse = await ffsnav.funcionesNuevasNav(message, clientes)
