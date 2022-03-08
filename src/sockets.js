@@ -221,10 +221,14 @@ module.exports = function(server){
                     clientenav = clientes.get(0);
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
                     console.log(message[2]);
+                    console.log('Este es el uniqueID');
+                    console.log(message[1]);
                     var Response = {
-                        'texto': JSON.stringify(message[2]),
+                        'texto': message[2],
+                        //'texto': JSON.stringify(message[2]),
                         'tipo': 'recibidos',
-                        'boton': 'stationResponse'
+                        'boton': 'stationResponse',
+                        'unid': UniqueId
                     };
                     clientenav.write(funciones.constructReply(Response, opCode));
                 }else if (MessageTypeId==4){
@@ -395,7 +399,7 @@ module.exports = function(server){
                             ]}  
 
                             
-                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            var OIBCS = [2, 'GC', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
 
 

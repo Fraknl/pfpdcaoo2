@@ -52,7 +52,7 @@ function getDiagnostics(stationId){
 }
 
 function getConfiguration(stationId){
-	ventana_configuracion.innerHTML=
+	/*ventana_configuracion.innerHTML=
 	"<div><label>AllowOfflineTxForUnknownId</label></div>"+
 	"<div><label>AuthorizationCacheEnabled</label></div>"+
 	"<div><label>AuthorizeRemoteTxRequests</label></div>"+
@@ -79,7 +79,7 @@ function getConfiguration(stationId){
 	//"<div><label>ConnectorPhaseRotation</label></div>"+
 	//"<div><label>ConnectorPhaseRotation</label></div>"+
 	//"<div><label>ConnectorPhaseRotation</label></div>"
-	
+	*/
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "GetConfiguration", "stationId": stationId});
 	ws.send(PayloadRequest);
