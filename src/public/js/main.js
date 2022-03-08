@@ -85,6 +85,15 @@ function getConfiguration(stationId){
 	ws.send(PayloadRequest);
 }
 
+function changeConfiguration(stationId){
+
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ChangeConfiguration", "stationId": stationId});
+	ws.send(PayloadRequest);
+	
+
+}
+
 
 
 function buttons_changeAvailability(){

@@ -270,9 +270,66 @@ module.exports = function(server){
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='ChangeConfiguration'){
-                            PayloadRequest = {"key": "AuthorizationCacheEnabled", "value": 'true'};
-                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+
+                            PayloadRequest = {"key": 
+                            [  'AllowOfflineTxForUnknownId', //si contiene
+                               'AuthorizationCacheEnabled',
+                               'AuthorizeRemoteTxRequests',
+                               //'BlinkRepeat',
+                               'ClockAlignedDataInterval',
+                               'ConnectionTimeOut',
+                               'ConnectorPhaseRotation',
+                               //'ConnectorPhaseRotationMaxLength',
+                               'GetConfigurationMaxKeys',
+                               'HeartbeatInterval',
+                               //'LightIntensity',
+                               'LocalAuthorizeOffline',
+                               'LocalPreAuthorize', 
+                               //'MaxEnergyOnInvalidId',
+                               'MeterValuesAlignedData',
+                               //'MeterValuesAlignedDataMaxLength',
+                               'MeterValuesSampledData',
+                               //'MeterValuesSampledDataMaxLength',
+                               'MeterValueSampleInterval',
+                               //'MinimumStatusDuration',
+                               'NumberOfConnectors',
+                               //'ResetRetries',
+                               'StopTransactionOnEVSideDisconnect',
+                               'StopTransactionOnInvalidId',
+                               //'StopTxnAlignedData',
+                               //'StopTxnAlignedDataMaxLength',
+                               'StopTxnSampledData',
+                               //'StopTxnSampledDataMaxLength',
+                               //'SupportedFeatureProfiles'//error
+                               //'SupportedFeatureProfilesMaxLength',
+                               //'TransactionMessageAttempts'
+                               'TransactionMessageRetryInterval',
+                               //'UnlockConnectorOnEVSideDisconnect', //error
+                               //'WebSocketPingInterval' //error
+                               //'LocalAuthListEnabled' //error
+                               
+                               //'LocalAuthListMaxLength' // si funciona
+                               //'SendLocalListMaxLength'// si funciona
+                               //'ReserveConnectorZeroSupported' //si funciona
+                               //'ChargeProfileMaxStackLevel'
+                               //'ChargingScheduleAllowedChargingRateUnit'//error
+                               //'ChargingScheduleMaxPeriods'
+                               //'ConnectorSwitch3to1PhaseSupported' //error
+                               //'MaxChargingProfilesInstalled' //error
+
+                           ]}
+
+
+
+
+
+                            //PayloadRequest = {"key": "AllowOfflineTxForUnknownId", "value": 'true'};
+                            //var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            
+                            var OIBCS = [2, 'CC', 'GetConfiguration', PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
+
                         }else if(message.tipo=='GetCompositeSchedule'){
                             PayloadRequest = {"connectorId": 3, "duration": 3600, 'chargingRateUnit': 'W'};
                             var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
