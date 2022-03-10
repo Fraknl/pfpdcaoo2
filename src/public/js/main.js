@@ -98,15 +98,15 @@ function changeConfiguration(stationId){
 
 function buttons_changeAvailability(){
 	ventana_configuracion.innerHTML= "<div class='custom-control custom-switch'>"+
-	"<input type='checkbox' class='custom-control-input' id='CCS' onchange='ChangeAvailability(1,this.id)'>"+
+	"<input type='checkbox' class='custom-control-input' id='CCS' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
 	"<label class='custom-control-label' for='CCS'>Conector CCS</label> &nbsp;"+ 
 "</div>"+
 "<div class='custom-control custom-switch'>"+
-"	<input type='checkbox' class='custom-control-input' id='Chademo' onchange='ChangeAvailability(1,this.id)'>"+
+"	<input type='checkbox' class='custom-control-input' id='Chademo' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
 	"<label class='custom-control-label' for='Chademo'>Conector Chademo</label>&nbsp;"+ 
 "</div>"+
 "<div class='custom-control custom-switch'>"+
-	"<input type='checkbox' class='custom-control-input' id='AC' onchange='ChangeAvailability(1,this.id)'>"+
+	"<input type='checkbox' class='custom-control-input' id='AC' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
 	"<label class='custom-control-label' for='AC'>Conector AC</label>&nbsp;"+
 "</div>"
 }

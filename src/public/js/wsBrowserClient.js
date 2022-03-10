@@ -1,5 +1,11 @@
 const ws = new WebSocket('ws://localhost:3000/navegador');
 
+function chconfiguration(stationId, keyOp, boxvalue){    
+    var PayloadRequest = JSON.stringify({"tipo": "ChConfiguration", "stationId": stationId, "key":keyOp, "valor":document.getElementById(boxvalue).value});
+    ws.send(PayloadRequest);
+
+ }
+
 ws.addEventListener('open', () => {
     console.log('Conectado al servidor')
 });
@@ -103,26 +109,31 @@ ws.addEventListener('message', event => {
 
         else if(unID=="CC"){
             var contenido;
+            //var keyOp;
             console.log('asi se ve un true')
             console.log(js1.texto.configurationKey[0].value)
             if(js1.texto.configurationKey[0].value=="true"){
+                keyOp="AllowOfflineTxForUnknownId";
+                boxkey="box_AllowOfflineTxForUnknownId";
                 contenido=                
                 "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+
                     "<select id='box_AllowOfflineTxForUnknownId'>"+
                     "<option selected='selected  value='true'>true</option>" +
-                    "<option 'value='false'>False</option>"+
+                    "<option 'value='false'>false</option>"+
                 "</select>"+
-                "<div><button>Aceptar</button></div>"+
+                "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                 "</div></div>";
             }
             else{
+                keyOp='AllowOfflineTxForUnknownId';
+                boxkey="box_AllowOfflineTxForUnknownId";
                 contenido=
                 "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+
-                    "<select>"+
-                    "<option value='true'>True</option>" +
-                    "<option selected='selected 'value='false'>False</option>"+
+                    "<select id='box_AllowOfflineTxForUnknownId'>"+
+                    "<option value='true'>true</option>" +
+                    "<option selected='selected 'value='false'>false</option>"+
                 "</select>"+
-                "<div><button>Aceptar</button></div>"+
+                "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                 "</div></div>";
 
             }
@@ -141,7 +152,7 @@ ws.addEventListener('message', event => {
                 contenido+=
                 "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+
                     "<select>"+
-                    "<option value='true'>True</option>" +
+                    "<option value='true'>true</option>" +
                     "<option selected='selected 'value='false'>false</option>"+
                 "</select>"+
                 "<div><button>Aceptar</button></div>"+
@@ -153,8 +164,8 @@ ws.addEventListener('message', event => {
                 contenido+=                
                 "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>Value:<br>"+
                     "<select>"+
-                    "<option selected='selected  value='true'>True</option>" +
-                    "<option 'value='false'>False</option>"+
+                    "<option selected='selected  value='true'>true</option>" +
+                    "<option 'value='false'>false</option>"+
                 "</select>"+
                 "<div><button>Aceptar</button></div>"+
                 "</div></div>";
@@ -163,8 +174,8 @@ ws.addEventListener('message', event => {
                 contenido+=
                 "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>Value:<br>"+
                     "<select>"+
-                    "<option value='true'>True</option>" +
-                    "<option selected='selected 'value='false'>False</option>"+
+                    "<option value='true'>true</option>" +
+                    "<option selected='selected 'value='false'>false</option>"+
                 "</select>"+
                 "<div><button>Aceptar</button></div>"+
                 "</div></div>";
@@ -271,15 +282,15 @@ ws.addEventListener('message', event => {
     
                 }
             contenido+=                
-                "<div><div class=container_key>StopTxnSampledData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[16].value+"'><div><button>Aceptar</button></div></div></div>"+
-                "<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[17].value+"'><div><button>Aceptar</button></div></div></div>";
+                "<div><div class=container_key>StopTxnSampledData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[16].value+"'><div><button>Aceptar</button></div></div></div>";
+                //"<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[17].value+"'><div><button>Aceptar</button></div></div></div>";
 
                 ventana_configuracion.innerHTML=contenido;
 
-               var configuracion={'key':'AllowOfflineTxForUnknownId', 'value':document.getElementById('box_AllowOfflineTxForUnknownId').value};
-               console.log(configuracion)
+               //var configuracion={'key':'AllowOfflineTxForUnknownId', 'value':document.getElementById('box_AllowOfflineTxForUnknownId').value};
+               //console.log(configuracion)
 
-/*
+ /*
             ventana_configuracion.innerHTML=
                 "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+
                 "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+js1.texto.configurationKey[1].value+"</div></div>"+
@@ -362,6 +373,8 @@ ws.addEventListener('message', event => {
         }
         
     }
+
+
 });
 
 const $messageForm1 = $('#acceptWsHandshake');    

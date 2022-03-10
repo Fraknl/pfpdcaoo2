@@ -298,12 +298,14 @@ module.exports = function(server){
                                'StopTransactionOnInvalidId',
                                //'StopTxnAlignedData',
                                //'StopTxnAlignedDataMaxLength',
-                               'StopTxnSampledData',
+                               'StopTxnSampledData'
                                //'StopTxnSampledDataMaxLength',
                                //'SupportedFeatureProfiles'//error
                                //'SupportedFeatureProfilesMaxLength',
                                //'TransactionMessageAttempts'
-                               'TransactionMessageRetryInterval',
+
+                               //'TransactionMessageRetryInterval', si funciona 
+
                                //'UnlockConnectorOnEVSideDisconnect', //error
                                //'WebSocketPingInterval' //error
                                //'LocalAuthListEnabled' //error
@@ -329,7 +331,11 @@ module.exports = function(server){
                             var OIBCS = [2, 'CC', 'GetConfiguration', PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
 
-
+                        }else if(message.tipo=='ChConfiguration'){
+                            PayloadRequest = {"key": message.key, "value": message.valor};
+                            var OIBCS = [2, '10', 'ChangeConfiguration', PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        
                         }else if(message.tipo=='GetCompositeSchedule'){
                             PayloadRequest = {"connectorId": 3, "duration": 3600, 'chargingRateUnit': 'W'};
                             var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
