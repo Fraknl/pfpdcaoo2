@@ -1,5 +1,11 @@
 const ws = new WebSocket('ws://localhost:3000/navegador');
 
+function chconfiguration(stationId, keyOp, boxvalue){    
+    var PayloadRequest = JSON.stringify({"tipo": "ChConfiguration", "stationId": stationId, "key":keyOp, "valor":document.getElementById(boxvalue).value});
+    ws.send(PayloadRequest);
+
+ }
+
 ws.addEventListener('open', () => {
     console.log('Conectado al servidor')
 });
@@ -9,18 +15,22 @@ ws.addEventListener('message', event => {
     console.log('Tipo de dato: ' + typeof(event.data));
     try {
         var js1 = JSON.parse(event.data);
+        console.log('este es js1')
+        console.log(js1)
     } catch (error) {
         console.error('No se pudo parsear');
     }
 
 
     const boton = js1.boton;
-    const texto = js1.texto;
+    const texto = JSON.stringify(js1.texto);
     const tipo = js1.tipo;
+    const unID = js1.unid;
 
     console.log('boton: ' + boton);
     console.log('texto: ' + texto);
     console.log('tipo: ' + tipo);
+    console.log('unID: ' + unID);
 
 
     if(tipo=='recibido'){
@@ -65,7 +75,254 @@ ws.addEventListener('message', event => {
 
     if(tipo=='recibidos'){
         document.getElementById(boton).innerHTML = texto;
-    };
+        
+        if(unID=="GC"){
+            console.log('Si ingresa aqui')
+            console.log(js1.texto)
+            console.log(js1.texto.configurationKey[0].value)
+
+            ventana_configuracion.innerHTML=
+                "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+js1.texto.configurationKey[0].value+"</div></div>"+
+                "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+js1.texto.configurationKey[1].value+"</div></div>"+
+                "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>"+js1.texto.configurationKey[2].value+"</div></div>"+
+                "<div><div class=container_key>ClockAlignedDataInterval</div><div class=container_conf>"+js1.texto.configurationKey[3].value+"</div></div>"+
+                "<div><div class=container_key>ConnectionTimeOut</div><div class=container_conf>"+js1.texto.configurationKey[4].value+"</div></div>"+
+                "<div><div class=container_key>ConnectorPhaseRotation</div><div class=container_conf>"+js1.texto.configurationKey[5].value+"</div></div>"+
+                "<div><div class=container_key>GetConfigurationMaxKeys</div><div class=container_conf>"+js1.texto.configurationKey[6].value+"</div></div>"+
+                "<div><div class=container_key>HeartbeatInterval</div><div class=container_conf>"+js1.texto.configurationKey[7].value+"</div></div>"+
+                "<div><div class=container_key>LocalAuthorizeOffline</div><div class=container_conf>"+js1.texto.configurationKey[8].value+"</div></div>"+
+                "<div><div class=container_key>LocalPreAuthorize</div><div class=container_conf>"+js1.texto.configurationKey[9].value+"</div></div>"+
+                "<div><div class=container_key>MeterValuesAlignedData</div><div class=container_conf>"+js1.texto.configurationKey[10].value+"</div></div>"+
+                "<div><div class=container_key>MeterValuesSampledData</div><div class=container_conf>"+js1.texto.configurationKey[11].value+"</div></div>"+
+                "<div><div class=container_key>MeterValueSampleInterval</div><div class=container_conf>"+js1.texto.configurationKey[12].value+"</div></div>"+
+                "<div><div class=container_key>NumberOfConnectors</div><div class=container_conf>"+js1.texto.configurationKey[13].value+"</div></div>"+
+                "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>"+js1.texto.configurationKey[14].value+"</div></div>"+
+                "<div><div class=container_key>StopTransactionOnInvalidId</div><div class=container_conf>"+js1.texto.configurationKey[15].value+"</div></div>"+
+                "<div><div class=container_key>StopTxnSampledData</div><div class=container_conf>"+js1.texto.configurationKey[16].value+"</div></div>"+
+                "<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf>"+js1.texto.configurationKey[17].value+"</div></div>"+
+                "<div><div class=container_key>WebSocketPingInterval</div><div class=container_conf></div></div>"+
+                "<div><div class=container_key>LocalAuthListMaxLength</div><div class=container_conf></div></div>"+
+                "<div><div class=container_key>SendLocalListMaxLength</div><div class=container_conf></div></div>"+
+                "<div><div class=container_key>ReserveConnectorZeroSupported</div><div class=container_conf></div></div>";
+
+        }
+
+        else if(unID=="CC"){
+            var contenido;
+            //var keyOp;
+            console.log('asi se ve un true')
+            console.log(js1.texto.configurationKey[0].value)
+            if(js1.texto.configurationKey[0].value=="true"){
+                keyOp="AllowOfflineTxForUnknownId";
+                boxkey="box_AllowOfflineTxForUnknownId";
+                contenido=                
+                "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+
+                    "<select id='box_AllowOfflineTxForUnknownId'>"+
+                    "<option selected='selected  value='true'>true</option>" +
+                    "<option 'value='false'>false</option>"+
+                "</select>"+
+                "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
+                "</div></div>";
+            }
+            else{
+                keyOp='AllowOfflineTxForUnknownId';
+                boxkey="box_AllowOfflineTxForUnknownId";
+                contenido=
+                "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+
+                    "<select id='box_AllowOfflineTxForUnknownId'>"+
+                    "<option value='true'>true</option>" +
+                    "<option selected='selected 'value='false'>false</option>"+
+                "</select>"+
+                "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
+                "</div></div>";
+
+            }
+
+            if(js1.texto.configurationKey[1].value=="true"){
+                contenido+=                
+                "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+
+                    "<select>"+
+                    "<option selected='selected  value='true'>true</option>" +
+                    "<option 'value='false'>false</option>"+
+                "</select>"+
+                "<div><button>Aceptar</button></div>"+
+                "</div></div>";
+            }
+            else{
+                contenido+=
+                "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+
+                    "<select>"+
+                    "<option value='true'>true</option>" +
+                    "<option selected='selected 'value='false'>false</option>"+
+                "</select>"+
+                "<div><button>Aceptar</button></div>"+
+                "</div></div>";
+
+            }
+
+            if(js1.texto.configurationKey[2].value=="true"){
+                contenido+=                
+                "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>Value:<br>"+
+                    "<select>"+
+                    "<option selected='selected  value='true'>true</option>" +
+                    "<option 'value='false'>false</option>"+
+                "</select>"+
+                "<div><button>Aceptar</button></div>"+
+                "</div></div>";
+            }
+            else{
+                contenido+=
+                "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>Value:<br>"+
+                    "<select>"+
+                    "<option value='true'>true</option>" +
+                    "<option selected='selected 'value='false'>false</option>"+
+                "</select>"+
+                "<div><button>Aceptar</button></div>"+
+                "</div></div>";
+
+            }
+            contenido+= 
+                "<div><div class=container_key>ClockAlignedDataInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[3].value+"'><div><button>Aceptar</button></div></div></div>"+
+                "<div><div class=container_key>ConnectionTimeOut</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[4].value+"'><div><button>Aceptar</button></div></div></div>"+
+                "<div><div class=container_key>ConnectorPhaseRotation</div><div class=container_conf>"+js1.texto.configurationKey[5].value+"</div></div>"+ // conectorphase rotation se debe probar
+                "<div><div class=container_key>GetConfigurationMaxKeys</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[6].value+"'><div><button>Aceptar</button></div></div></div>"+
+                "<div><div class=container_key>HeartbeatInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[7].value+"'><div><button>Aceptar</button></div></div></div>";
+
+            if(js1.texto.configurationKey[8].value=="true"){
+                    contenido+=                
+                    "<div><div class=container_key>LocalAuthorizeOffline</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option selected='selected  value='true'>True</option>" +
+                        "<option 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+                }
+            else{
+                contenido+=
+                    "<div><div class=container_key>LocalAuthorizeOffline</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option value='true'>True</option>" +
+                        "<option selected='selected 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+    
+                }
+
+            if(js1.texto.configurationKey[9].value=="true"){
+                    contenido+=                
+                    "<div><div class=container_key>LocalPreAuthorize</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option selected='selected  value='true'>True</option>" +
+                        "<option 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+                }
+            else{
+                contenido+=
+                    "<div><div class=container_key>LocalPreAuthorize</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option value='true'>True</option>" +
+                        "<option selected='selected 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+    
+                }
+
+            contenido+=               
+                "<div><div class=container_key>MeterValuesAlignedData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[10].value+"'><div><button>Aceptar</button></div></div></div>"+
+                "<div><div class=container_key>MeterValuesSampledData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[11].value+"'><div><button>Aceptar</button></div></div></div>"+
+                "<div><div class=container_key>MeterValueSampleInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[12].value+"'><div><button>Aceptar</button></div></div></div>"+
+                "<div><div class=container_key>NumberOfConnectors</div><div class=container_conf>"+js1.texto.configurationKey[13].value+"</div></div>";
+                
+            if(js1.texto.configurationKey[14].value=="true"){
+                    contenido+=                
+                    "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option selected='selected  value='true'>True</option>" +
+                        "<option 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+                }
+            else{
+                contenido+=
+                    "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option value='true'>True</option>" +
+                        "<option selected='selected 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+    
+                }
+
+            if(js1.texto.configurationKey[15].value=="true"){
+                    contenido+=                
+                    "<div><div class=container_key>StopTransactionOnInvalidId</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option selected='selected  value='true'>True</option>" +
+                        "<option 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+                }
+            else{
+                contenido+=
+                    "<div><div class=container_key>StopTransactionOnInvalidId</div><div class=container_conf>Value:<br>"+
+                        "<select>"+
+                        "<option value='true'>True</option>" +
+                        "<option selected='selected 'value='false'>False</option>"+
+                    "</select>"+
+                    "<div><button>Aceptar</button></div>"+
+                    "</div></div>";
+    
+                }
+            contenido+=                
+                "<div><div class=container_key>StopTxnSampledData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[16].value+"'><div><button>Aceptar</button></div></div></div>";
+                //"<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[17].value+"'><div><button>Aceptar</button></div></div></div>";
+
+                ventana_configuracion.innerHTML=contenido;
+
+               //var configuracion={'key':'AllowOfflineTxForUnknownId', 'value':document.getElementById('box_AllowOfflineTxForUnknownId').value};
+               //console.log(configuracion)
+
+ /*
+            ventana_configuracion.innerHTML=
+                "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+
+                "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+js1.texto.configurationKey[1].value+"</div></div>"+
+                "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>"+js1.texto.configurationKey[2].value+"</div></div>"+
+                "<div><div class=container_key>ClockAlignedDataInterval</div><div class=container_conf>"+js1.texto.configurationKey[3].value+"</div></div>"+
+                "<div><div class=container_key>ConnectionTimeOut</div><div class=container_conf>"+js1.texto.configurationKey[4].value+"</div></div>"+
+                "<div><div class=container_key>ConnectorPhaseRotation</div><div class=container_conf>"+js1.texto.configurationKey[5].value+"</div></div>"+
+                "<div><div class=container_key>GetConfigurationMaxKeys</div><div class=container_conf>"+js1.texto.configurationKey[6].value+"</div></div>"+
+                "<div><div class=container_key>HeartbeatInterval</div><div class=container_conf>"+js1.texto.configurationKey[7].value+"</div></div>"+
+                "<div><div class=container_key>LocalAuthorizeOffline</div><div class=container_conf>"+js1.texto.configurationKey[8].value+"</div></div>"+
+                "<div><div class=container_key>LocalPreAuthorize</div><div class=container_conf>"+js1.texto.configurationKey[9].value+"</div></div>"+
+                "<div><div class=container_key>MeterValuesAlignedData</div><div class=container_conf>"+js1.texto.configurationKey[10].value+"</div></div>"+
+                "<div><div class=container_key>MeterValuesSampledData</div><div class=container_conf>"+js1.texto.configurationKey[11].value+"</div></div>"+
+                "<div><div class=container_key>MeterValueSampleInterval</div><div class=container_conf>"+js1.texto.configurationKey[12].value+"</div></div>"+
+                "<div><div class=container_key>NumberOfConnectors</div><div class=container_conf>"+js1.texto.configurationKey[13].value+"</div></div>"+
+                "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>"+js1.texto.configurationKey[14].value+"</div></div>"+
+                "<div><div class=container_key>StopTransactionOnInvalidId</div><div class=container_conf>"+js1.texto.configurationKey[15].value+"</div></div>"+
+                "<div><div class=container_key>StopTxnSampledData</div><div class=container_conf>"+js1.texto.configurationKey[16].value+"</div></div>"+
+                "<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf>"+js1.texto.configurationKey[17].value+"</div></div>"+
+                "<div><div class=container_key>WebSocketPingInterval</div><div class=container_conf></div></div>"+
+                "<div><div class=container_key>LocalAuthListMaxLength</div><div class=container_conf></div></div>"+
+                "<div><div class=container_key>SendLocalListMaxLength</div><div class=container_conf></div></div>"+
+                "<div><div class=container_key>ReserveConnectorZeroSupported</div><div class=container_conf></div></div>"+
+                "<div><button onclick='changeConfiguration(1)'>Aceptar</button></div>";
+                */
+
+    }
+
+
+
+        }
+    
 
     if(tipo == 'metervalues'){
         llenartabla(texto);
@@ -116,6 +373,8 @@ ws.addEventListener('message', event => {
         }
         
     }
+
+
 });
 
 const $messageForm1 = $('#acceptWsHandshake');    
@@ -135,3 +394,11 @@ var layout = {
         titlefont: { size:30 },
     }
 };
+
+/*
+changeConfiguration(stationId){
+    var PayloadRequest = JSON.stringify({"tipo": "ChangeConfiguration", "stationId": stationId});
+    ws.send(PayloadRequest);
+
+}
+*/

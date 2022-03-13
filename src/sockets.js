@@ -39,6 +39,8 @@ console.log('Esta es mi IP: ');
 console.log(miIp);
 
 const FtpSrv = require('ftp-srv');
+
+
 /*const miIp = '192.168.222.201';
 const miIpLocal = '192.168.1.20';*/
 //miIp = '192.168.222.201';
@@ -50,18 +52,15 @@ const blacklist = [];
 const whitelist = ['DIR', 'PWD', 'CWD', 'TYPE', 'PASV', 'PORT', 'LIST', 'STOR'];
 
 ftpServer.on('login', (data, resolve, reject) => {
+
+    console.log('login en servidor FTP')
+
     console.log(' ha habido un login')
     var username = data.username;
     var password = data.password;
-    //if(username=='admin' && password=='ftp123'){
-        //console.log('Credenciales FTP correctas')
         const rutaFTP = '/src/public/diagnostics/';
         const res = {'cwd': rutaFTP, 'blacklist': blacklist, 'whitelist': whitelist}
-        resolve(res);
-    //}
-    /*else{
-        reject();
-    }*/
+        resolve();
     
  });
 
@@ -220,10 +219,14 @@ module.exports = function(server){
                     clientenav = clientes.get(0);
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
                     console.log(message[2]);
+                    console.log('Este es el uniqueID');
+                    console.log(message[1]);
                     var Response = {
-                        'texto': JSON.stringify(message[2]),
+                        'texto': message[2],
+                        //'texto': JSON.stringify(message[2]),
                         'tipo': 'recibidos',
-                        'boton': 'stationResponse'
+                        'boton': 'stationResponse',
+                        'unid': UniqueId
                     };
                     clientenav.write(funciones.constructReply(Response, opCode));   
                 }else if (MessageTypeId==4){
@@ -261,15 +264,81 @@ module.exports = function(server){
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='ChangeAvailability'){
-                            PayloadRequest = {"reservationId": '1'};
+                            PayloadRequest = {"connectorId":message.Conector, "type":message.Estado};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='ChangeConfiguration'){
-                            PayloadRequest = {"key": "AuthorizationCacheEnabled", "value": 'true'};
-                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+
+                            PayloadRequest = {"key": 
+                            [  'AllowOfflineTxForUnknownId', //si contiene
+                               'AuthorizationCacheEnabled',
+                               'AuthorizeRemoteTxRequests',
+                               //'BlinkRepeat',
+                               'ClockAlignedDataInterval',
+                               'ConnectionTimeOut',
+                               'ConnectorPhaseRotation',
+                               //'ConnectorPhaseRotationMaxLength',
+                               'GetConfigurationMaxKeys',
+                               'HeartbeatInterval',
+                               //'LightIntensity',
+                               'LocalAuthorizeOffline',
+                               'LocalPreAuthorize', 
+                               //'MaxEnergyOnInvalidId',
+                               'MeterValuesAlignedData',
+                               //'MeterValuesAlignedDataMaxLength',
+                               'MeterValuesSampledData',
+                               //'MeterValuesSampledDataMaxLength',
+                               'MeterValueSampleInterval',
+                               //'MinimumStatusDuration',
+                               'NumberOfConnectors',
+                               //'ResetRetries',
+                               'StopTransactionOnEVSideDisconnect',
+                               'StopTransactionOnInvalidId',
+                               //'StopTxnAlignedData',
+                               //'StopTxnAlignedDataMaxLength',
+                               'StopTxnSampledData'
+                               //'StopTxnSampledDataMaxLength',
+                               //'SupportedFeatureProfiles'//error
+                               //'SupportedFeatureProfilesMaxLength',
+                               //'TransactionMessageAttempts'
+
+                               //'TransactionMessageRetryInterval', si funciona 
+
+                               //'UnlockConnectorOnEVSideDisconnect', //error
+                               //'WebSocketPingInterval' //error
+                               //'LocalAuthListEnabled' //error
+                               
+                               //'LocalAuthListMaxLength' // si funciona
+                               //'SendLocalListMaxLength'// si funciona
+                               //'ReserveConnectorZeroSupported' //si funciona
+                               //'ChargeProfileMaxStackLevel'
+                               //'ChargingScheduleAllowedChargingRateUnit'//error
+                               //'ChargingScheduleMaxPeriods'
+                               //'ConnectorSwitch3to1PhaseSupported' //error
+                               //'MaxChargingProfilesInstalled' //error
+
+                           ]}
+
+
+
+
+
+                            //PayloadRequest = {"key": "AllowOfflineTxForUnknownId", "value": 'true'};
+                            //var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            
+                            var OIBCS = [2, 'CC', 'GetConfiguration', PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
+                        }else if(message.tipo=='ChConfiguration'){
+                            PayloadRequest = {"key": message.key, "value": message.valor};
+                            var OIBCS = [2, '10', 'ChangeConfiguration', PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        
                         }else if(message.tipo=='GetCompositeSchedule'){
                             PayloadRequest = {"connectorId": 3, "duration": 3600, 'chargingRateUnit': 'W'};
+                            var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
+                        }else if(message.tipo=='UnlockConnector'){
+                            PayloadRequest = {"connectorId":message.Conector};
                             var OIBCS = [2, 'abc', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
                         }else if(message.tipo=='SendLocalList'){
@@ -341,14 +410,64 @@ module.exports = function(server){
                             'MaxChargingProfilesInstalled'
                             ]};*/
 
-                            PayloadRequest = {"key": ['LocalPreAuthorize', 
-                            'LocalAuthorizeOffline',
-                            'AuthorizationCacheEnabled'
-                            ]} 
+                            //PayloadRequest = {"key": ['LocalPreAuthorize', 
+                            //'LocalAuthorizeOffline',
+                            //'AuthorizationCacheEnabled'
+                            //]}  
+                             PayloadRequest = {"key": 
+                             [  'AllowOfflineTxForUnknownId', //si contiene
+                                'AuthorizationCacheEnabled',
+                                'AuthorizeRemoteTxRequests',
+                                //'BlinkRepeat',
+                                'ClockAlignedDataInterval',
+                                'ConnectionTimeOut',
+                                'ConnectorPhaseRotation',
+                                //'ConnectorPhaseRotationMaxLength',
+                                'GetConfigurationMaxKeys',
+                                'HeartbeatInterval',
+                                //'LightIntensity',
+                                'LocalAuthorizeOffline',
+                                'LocalPreAuthorize', 
+                                //'MaxEnergyOnInvalidId',
+                                'MeterValuesAlignedData',
+                                //'MeterValuesAlignedDataMaxLength',
+                                'MeterValuesSampledData',
+                                //'MeterValuesSampledDataMaxLength',
+                                'MeterValueSampleInterval',
+                                //'MinimumStatusDuration',
+                                'NumberOfConnectors',
+                                //'ResetRetries',
+                                'StopTransactionOnEVSideDisconnect',
+                                'StopTransactionOnInvalidId',
+                                //'StopTxnAlignedData',
+                                //'StopTxnAlignedDataMaxLength',
+                                'StopTxnSampledData',
+                                //'StopTxnSampledDataMaxLength',
+                                //'SupportedFeatureProfiles'//error
+                                //'SupportedFeatureProfilesMaxLength',
+                                //'TransactionMessageAttempts'
+                                'TransactionMessageRetryInterval',
+                                //'UnlockConnectorOnEVSideDisconnect', //error
+                                //'WebSocketPingInterval' //error
+                                //'LocalAuthListEnabled' //error
+                                
+                                //'LocalAuthListMaxLength' // si funciona
+                                //'SendLocalListMaxLength'// si funciona
+                                //'ReserveConnectorZeroSupported' //si funciona
+                                //'ChargeProfileMaxStackLevel'
+                                //'ChargingScheduleAllowedChargingRateUnit'//error
+                                //'ChargingScheduleMaxPeriods'
+                                //'ConnectorSwitch3to1PhaseSupported' //error
+                                //'MaxChargingProfilesInstalled' //error
+
+                            ]}  
 
                             
-                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            var OIBCS = [2, 'GC', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
+
+
                         }else{
                             /*clientenav = clientes.get(0);
                             PayloadResponse = await ffsnav.funcionesNuevasNav(message, clientes)

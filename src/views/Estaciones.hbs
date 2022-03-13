@@ -172,17 +172,17 @@
                             <button onclick="david(1)" class="btn btn-danger">boton david</button>
                         </div>
                     </div> -->
-
-                    <div class="col-md-5">
-                        <div class="card" style="margin-bottom: 20px">
-                            <div class="card-header">
+                <div id="contenedort">
+                    <div class="col-md-5" style="float:left;">
+                        <div  class="card" style="margin-bottom: 20px">
+                            <div  class="card-header">
                                 <b>Operaciones OCPP</b>
                             </div>
                             
                             <div class="card-body" id="Cuadro_opciones">
                                 <div>
                                     <button onclick="cancelReservation(1)" class="btn btn-danger m-1">Cancelar Reservacion</button>
-                                    <button onclick="changeAvailability(1)" class="btn btn-info m-1">Cambiar Diposnibilidad</button>
+                                    <button onclick="buttons_changeAvailability()" class="btn btn-info m-1">Cambiar Disponibilidad</button>
                                     <button onclick="changeConfiguration(1)" class="btn btn-warning m-1">Cambiar Configuración</button>
                                     <button onclick="clearCache(1)" class="btn btn-success m-1">Limpiar Caché</button>
                                     <button onclick="clearChargingProfile(1)" class="btn btn-primary m-1">Limpiar Perfil de Carga</button>
@@ -198,21 +198,27 @@
                                     <button onclick="sendLocalList(1)" class="btn btn-secondary m-1">Enviar Lista Local</button>
                                     <button onclick="setChargingProfile(1)" class="btn btn-light m-1">Establecer Perfil de Carga</button>
                                     <button onclick="triggerMessage(1)" class="btn btn-muted m-1">Solicitar Operacion OCPP</button>
-                                    <button onclick="unlockConector(1)" class="btn btn-danger m-1">Desbloquear Conector</button>
+                                    <button onclick="buttons_unlockConnector()" class="btn btn-danger m-1">Desbloquear Conector</button>
                                     <button onclick="updateFirmware(1)" class="btn btn-info m-1">Actualizar Firmware</button>
                                 </div>
                             </div>
+                            
 
                             <div class="modal-footer">
                                 <div>
                                     <b>Mensaje desde la estacion</b>
                                 </div>
-                                <div id="stationResponse">
+                                <div id="stationResponse" style="overflow : auto;">
 
                                 </div>
                             </div>
+                            
                         </div>
+                        
+                        
                     </div>
+                    <div id="ventana_configuracion" class="card"></div>
+                   </div>
                 </div>
             </div>
         </div>

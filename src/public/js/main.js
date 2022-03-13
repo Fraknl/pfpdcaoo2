@@ -1,5 +1,5 @@
 const http = new XMLHttpRequest();
-//var cuadro_opciones=document.getElementById("Cuadro_opciones");
+
 
 
 function changeConfiguration(stationId){
@@ -52,41 +52,69 @@ function getDiagnostics(stationId){
 }
 
 function getConfiguration(stationId){
+	/*ventana_configuracion.innerHTML=
+	"<div><label>AllowOfflineTxForUnknownId</label></div>"+
+	"<div><label>AuthorizationCacheEnabled</label></div>"+
+	"<div><label>AuthorizeRemoteTxRequests</label></div>"+
+	"<div><label>ClockAlignedDataInterval</label></div>"+
+	"<div><label>ConnectionTimeOut</label></div>"+
+	"<div><label>ConnectorPhaseRotation</label></div>"+
+	"<div><label>GetConfigurationMaxKeys</label></div>"+
+	"<div><label>HeartbeatInterval</label></div>"+
+	"<div><label>LocalAuthorizeOffline</label></div>"+
+	"<div><label>LocalPreAuthorize</label></div>"+
+	"<div><label>MeterValuesAlignedData</label></div>"+
+	"<div><label>MeterValuesSampledData</label></div>"+
+	"<div><label>MeterValueSampleInterval</label></div>"+
+	"<div><label>NumberOfConnectors</label></div>"+
+	"<div><label>StopTransactionOnEVSideDisconnect</label></div>"+
+	"<div><label>StopTransactionOnInvalidId</label></div>"+
+	"<div><label>StopTxnSampledData</label></div>"+
+	"<div><label>TransactionMessageRetryInterval</label></div>"+
+	"<div><label>WebSocketPingInterval</label></div>"+
+	"<div><label>LocalAuthListMaxLength</label></div>"+
+	"<div><label>SendLocalListMaxLength</label></div>"+
+	"<div><label>ReserveConnectorZeroSupported</label></div>";
+	//"<div><label>ConnectorPhaseRotation</label></div>"+
+	//"<div><label>ConnectorPhaseRotation</label></div>"+
+	//"<div><label>ConnectorPhaseRotation</label></div>"+
+	//"<div><label>ConnectorPhaseRotation</label></div>"
+	*/
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "GetConfiguration", "stationId": stationId});
 	ws.send(PayloadRequest);
 }
 
-/*
-function changeAvailability(stationId){
-	cuadro_opciones.innerHTML= "<div>"+
-	"<button onclick='cancelReservation(1)' class='btn btn-danger m-1'>Cancelar Reservacion</button>"+
-	"<button onclick='changeAvailability(1)' class='btn btn-info m-1'>Cambiar Diposnibilidad</button>"+
-	"<div>hola</div>"+
-	"<button onclick='changeConfiguration(1)' class='btn btn-warning m-1'>Cambiar Configuración</button>"+
-	"<button onclick='clearCache(1)' class='btn btn-success m-1'>Limpiar Caché</button>"+
-	"<button onclick='clearChargingProfile(1)' class='btn btn-primary m-1'>Limpiar Perfil de Carga</button>"+
-	"<button onclick='dataTransfer(1)' class='btn btn-secondary m-1'>Transferencia de Datos</button>"+
-	"<button onclick='getCompositeSchedule(1)' class='btn btn-light m-1'>Obtener Horario Compuesto</button>"+
-	"<button onclick='getConfiguration(1)' class='btn btn-dark m-1'>Obtener configuracion</button>"+
-	"<button onclick='getDiagnostics(1)' class='btn btn-muted m-1'>Pedir diagnostico</button>"+
-	"<button onclick='remoteStartTransaction(1)' class='btn btn-danger m-1'>Iniciar Transaccion Remota</button>"+
-	"<button onclick='remoteStopTransaction(1)' class='btn btn-info m-1'>Detener Transaccion Remota</button>"+
-	"<button onclick='getLocalLisVersion(1)' class='btn btn-warning m-1'>Obtener Version de Lista Local</button>"+
-	"<button onclick='reserveNow(1)' class='btn btn-success m-1'>Reservar Ahora</button>"+
-	"<button onclick='reset(1)' class='btn btn-primery m-1'>Resetear</button>"+
-	"<button onclick='sendLocalList(1)' class='btn btn-secondary m-1'>Enviar Lista Local</button>"+
-	"<button onclick='setChargningProfile(1)' class='btn btn-light m-1'>Establecer Perfil de Carga</button>"+
-	"<button onclick='getLocalLisVersion(1)' class='btn btn-dark m-1'>Obtener Version de Lista Local</button>"+
-	"<button onclick='triggerMessage(1)' class='btn btn-muted m-1'>Solicitar Operacion OCPP</button>"+
-	"<button onclick='unlockConector(1)' class='btn btn-danger m-1'>Desbloquear Conector</button>"+
-	"<button onclick='updateFirmware(1)' class='btn btn-info m-1'>Actualizar Firmware</button>"+
-"</div>";
-*/
+function changeConfiguration(stationId){
 
-function ChangeAvailability(stationId, id){
+	console.log('stationId: ' + stationId);
+	var PayloadRequest = JSON.stringify({"tipo": "ChangeConfiguration", "stationId": stationId});
+	ws.send(PayloadRequest);
+	
+
+}
+
+
+
+function buttons_changeAvailability(){
+	ventana_configuracion.innerHTML= "<div class='custom-control custom-switch'>"+
+	"<input type='checkbox' class='custom-control-input' id='CCS' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
+	"<label class='custom-control-label' for='CCS'>Conector CCS</label> &nbsp;"+ 
+"</div>"+
+"<div class='custom-control custom-switch'>"+
+"	<input type='checkbox' class='custom-control-input' id='Chademo' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
+	"<label class='custom-control-label' for='Chademo'>Conector Chademo</label>&nbsp;"+ 
+"</div>"+
+"<div class='custom-control custom-switch'>"+
+	"<input type='checkbox' class='custom-control-input' id='AC' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
+	"<label class='custom-control-label' for='AC'>Conector AC</label>&nbsp;"+
+"</div>"
+}
+
+
+function ChangeAvailability(stationId,id){
 	//console.log('Hola');
-	/*
+	
 	var checkBox= document.getElementById(id);
 	var idConector;
 	console.log('stationId: ' + stationId);
@@ -109,8 +137,59 @@ function ChangeAvailability(stationId, id){
 		var PayloadRequest = JSON.stringify({"tipo": "ChangeAvailability","Estado":"Inoperative","Conector":idConector, "stationId": stationId});
 		ws.send(PayloadRequest);
 	}
-	*/
+	
 }
+
+function buttons_unlockConnector(){
+	
+	ventana_configuracion.innerHTML=
+"<div style='margin-top:10px'>"+
+	"<label>Conector CCS</label>"+	
+	"<button id='UnCCS' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
+"</div>"+
+"<div style='margin-top:10px'>"+
+	"<label>Conector Chademo</label>"+
+	"<button  id='UnChademo' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
+"</div>"+
+"<div style='margin-top:10px'>"+
+	"<label>Conector AC</label>"+
+	"<button id='UnAC' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
+"</div>"
+}
+
+function UnlockConnector(stationId, id){
+	//var conectorbutton= document.getElementById(id).id;
+	var idConector;
+	console.log('stationId: ' + stationId);
+	if(id=="UnCCS"){
+		idConector=1;
+
+
+	}else if(id=="UnChademo"){
+
+		idConector=2;
+
+	}else if(id=="UnAC"){
+		idConector=3;
+	}
+	var PayloadRequest = JSON.stringify({"tipo": "UnlockConnector","Conector":idConector,"stationId": stationId});
+	ws.send(PayloadRequest);
+
+}
+/*
+function buttons_unlockConnector(){
+	var currentDate = new Date();
+
+	ventana_configuracion.innerHTML=
+	"<p id='parrafo_prueba'></p>"
+"<input type='date' id='start' name='trip-start'"+
+       "value='2018-07-22'"+
+       "min='2018-01-01' max='2018-12-31'>";
+	   parrafo_prueba.innerHTML=currentDate;
+}
+
+*/
+
 
 
 

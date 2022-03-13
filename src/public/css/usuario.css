@@ -66,3 +66,38 @@
     text-align: center;
 }
 
+#ventana_configuracion{
+    
+    /*border: black 5px solid;*/
+    position:relative;
+    top:50px;
+    float:left;
+    width:450px;
+    height:925px;
+    overflow : auto;
+}
+
+#contenedort{
+
+    /*border: yellow 5px solid;*/
+    width:900px;
+    height:1100px;
+    
+
+}
+
+.container_conf{
+    width:425px;
+    height:90px;
+    border:black 2px solid;
+    overflow : auto;
+    /*float:left;*/
+}
+
+.container_key{
+    width:425px;
+    height: 30px;
+    border:black 2px solid;
+    /*float:left;*/
+    
+}
