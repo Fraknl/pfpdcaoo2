@@ -1,0 +1,21 @@
+PayloadRequest = {
+    "connectorId": 1,
+    "csChargingProfiles": {
+        "chargingProfileId": 158798,
+        "chargingProfileKind": "Absolute",
+        "chargingProfilePurpose": "TxDefaultProfile",
+        "stackLevel": 0,
+        "transactionId": 339373,
+        "validFrom": "2022–10–15T14:32:00:00z",
+        "validTo": "2022–10–16T14:15:00:00z",
+        "chargingSchedule": {
+            "chargingRateUnit": "W",
+            "chargingSchedulePeriod": [
+                {"limit": 11000.0, "startPeriod": 0},
+                {"limit": 1000.0, "startPeriod": 780},
+                {"limit": 1500.0, "startPeriod": 1680}
+            ],
+            "duration": 1680
+        }        
+    }
+}

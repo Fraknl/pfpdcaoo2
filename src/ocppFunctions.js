@@ -1,20 +1,4 @@
 
-/*
-const crypto = require('crypto');
-const { urlencoded, text } = require('express');
-const { url } = require('inspector');
-const { type } = require('os');
-const funciones = require('./funciones.js');
-var clientes = new Map();
-
-
-var generateAcceptValue = function (acceptKey) {
-return crypto
-.createHash('sha1')
-.update(acceptKey + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', 'binary')
-.digest('base64');
-};
-*/
 const { response } = require('express');
 const pool = require('./database.js');
 
@@ -55,7 +39,6 @@ function StatusNotificationResponse(Payload){
     const currentDate = new Date();
     PayloadResponse = {"status": "Accepted", "currentDate": currentDate};
     PayloadResponseNav = {'tipo': 'status', 'texto':Payload.status};
-
     return [PayloadResponse, PayloadResponseNav];
 }
 

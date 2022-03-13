@@ -67,6 +67,7 @@ app.set('view engine', '.hbs');
 
 app.use(require('./routes/RutasInicio.js')); 
 app.use(require('./routes/RutasTarjetas.js'));
+app.use(require('./routes/RutasClientes.js'));
 app.use(require('./routes/RutasEstaciones.js'));   
 app.use(require('./routes/RutasTransacciones.js'));
  

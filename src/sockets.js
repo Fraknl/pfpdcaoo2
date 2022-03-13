@@ -44,8 +44,9 @@ const FtpSrv = require('ftp-srv');
 /*const miIp = '192.168.222.201';
 const miIpLocal = '192.168.1.20';*/
 //miIp = '192.168.222.201';
-//const uriFTP = 'ftp://'+miIp+':21/';
-const uriFTP = 'ftp://192.168.222.201:21/';
+const uriFTP = 'ftp://'+miIp+':21/';
+//const uriFTP = 'ftp://192.168.222.201:21/';
+//const uriFTP = 'ftp://192.168.1.10:21/';
 const ftpServer = new FtpSrv({'url': uriFTP,
 'greeting': 'Saludo de bienvenida desde servidor OCPP'});
 const blacklist = [];
