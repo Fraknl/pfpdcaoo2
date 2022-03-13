@@ -216,8 +216,6 @@ module.exports = function(server){
                             console.log('Navegador no conectado');
                         } 
                     }
-                    
-
                 }else if (MessageTypeId==3){
                     clientenav = clientes.get(0);
                     console.log('Se ha recibido un MessageTypeId igual a 3!')
@@ -227,7 +225,7 @@ module.exports = function(server){
                         'tipo': 'recibidos',
                         'boton': 'stationResponse'
                     };
-                    clientenav.write(funciones.constructReply(Response, opCode));
+                    clientenav.write(funciones.constructReply(Response, opCode));   
                 }else if (MessageTypeId==4){
                     clientenav = clientes.get(0);
                     console.log('Se ha recibido un MessageTypeId igual a 4!, que significa algun error')
@@ -310,17 +308,20 @@ module.exports = function(server){
                                     "chargingProfileId": 1,
                                     "transactionId": 1,
                                     "stackLevel": 1,
-                                    "chargingProfilePurpose": "TxProfile",
+                                    "chargingProfilePurpose": "TxDefaultProfile",
                                     "chargingProfileKind": "Absolute",
                                     "recurrencyKind": "Daily",
-                                    "validFrom": '2022-02-28T17:10:00.000Z',
-                                    "validTo": '2022-02-28T17:20:00.000Z',
+                                    "validFrom": '2022-03-06T17:10:00.000Z',
+                                    "validTo": '2022-03-16T17:20:00.000Z',
                                     "chargingSchedule": {
                                         "duration": 100,
-                                        "startSchedule": '2022-02-28T17:1:00.000Z',
+                                        "startSchedule": '2022-03-6T10:00:00.000Z',
                                         "chargingRateUnit": "A",
-                                        "chargingSchedulePeriod": [{"startPeriod": 1, "limit": 0.5, "numberPhases": 3}],
-                                        "minChargingRate": 0.4
+                                        "chargingSchedulePeriod": [
+                                            {"startPeriod": 0, "limit": 1, "numberPhases": 3},
+                                            {"startPeriod": 1, "limit": 2, "numberPhases": 3}
+                                        ],
+                                        "minChargingRate": 1
                                     }
                                 }
                             }

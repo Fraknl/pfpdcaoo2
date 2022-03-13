@@ -1,6 +1,8 @@
 function parseMessage (buffer) {
   const firstByte = buffer.readUInt8(0);
   const opCode = firstByte & 0xF;
+  const fin = firstByte & 0x80;
+  console.log('bit fin: ' + fin);
 
   if (opCode === 0x8) 
      return null; 
