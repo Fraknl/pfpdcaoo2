@@ -61,7 +61,11 @@ app.engine('.hbs', exphbs({
   layoutsDir: path.join(app.get('views'), 'layouts'),
   partialsDir: path.join(app.get('views'), 'partials'),
   extname: '.hbs',
-  helpers: require('./lib/handlebars')
+  //helpers: require('./lib/handlebars')
+  helpers: {'json': function(obj){
+      return JSON.stringify(obj);
+    }
+  }
 }));
 app.set('view engine', '.hbs');
 
