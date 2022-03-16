@@ -4,6 +4,8 @@ const pool = require('./database.js');
 
 
 async function AuthorizeResponse(crfid){
+    console.log('Este es el codigo')
+    console.log(crfid)
     var datosTarjeta = await pool.query('SELECT id_tarjeta, estado FROM tarjetas where codigo_rfid="' + crfid + '";');
     console.log('datos tarjeta: ');
     console.log(datosTarjeta);
@@ -141,7 +143,7 @@ async function StopTransactionConf(Payload){
     console.log(meterStart);
     let meterStop = Payload.meterStop;
     let ec = parseInt(meterStop,10) - parseInt(meterStart[0].energia_inicio,10);
-    ec = ec*1000;
+    ec = ec/1000;
     console.log(ec);
     let razon = Payload.reason;
     const values = [hora_fin, meterStop, ec, estado, razon, transactionId]

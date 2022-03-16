@@ -96,14 +96,14 @@ ws.addEventListener('message', event => {
                 "<div><div class=container_key>MeterValuesSampledData</div><div class=container_conf>"+js1.texto.configurationKey[11].value+"</div></div>"+
                 "<div><div class=container_key>MeterValueSampleInterval</div><div class=container_conf>"+js1.texto.configurationKey[12].value+"</div></div>"+
                 "<div><div class=container_key>NumberOfConnectors</div><div class=container_conf>"+js1.texto.configurationKey[13].value+"</div></div>"+
-                "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>"+js1.texto.configurationKey[14].value+"</div></div>"+
-                "<div><div class=container_key>StopTransactionOnInvalidId</div><div class=container_conf>"+js1.texto.configurationKey[15].value+"</div></div>"+
-                "<div><div class=container_key>StopTxnSampledData</div><div class=container_conf>"+js1.texto.configurationKey[16].value+"</div></div>"+
-                "<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf>"+js1.texto.configurationKey[17].value+"</div></div>"+
-                "<div><div class=container_key>WebSocketPingInterval</div><div class=container_conf></div></div>"+
-                "<div><div class=container_key>LocalAuthListMaxLength</div><div class=container_conf></div></div>"+
-                "<div><div class=container_key>SendLocalListMaxLength</div><div class=container_conf></div></div>"+
-                "<div><div class=container_key>ReserveConnectorZeroSupported</div><div class=container_conf></div></div>";
+                "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>"+js1.texto.configurationKey[14].value+"</div></div>"
+                //"<div><div class=container_key>StopTransactionOnInvalidId</div><div class=container_conf>"+js1.texto.configurationKey[15].value+"</div></div>"+
+                //"<div><div class=container_key>StopTxnSampledData</div><div class=container_conf>"+js1.texto.configurationKey[16].value+"</div></div>"+
+                //"<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf>"+js1.texto.configurationKey[17].value+"</div></div>"+
+                //"<div><div class=container_key>WebSocketPingInterval</div><div class=container_conf></div></div>"+
+                //"<div><div class=container_key>LocalAuthListMaxLength</div><div class=container_conf></div></div>"+
+                //"<div><div class=container_key>SendLocalListMaxLength</div><div class=container_conf></div></div>"+
+                //"<div><div class=container_key>ReserveConnectorZeroSupported</div><div class=container_conf></div></div>";
 
         }
 
@@ -139,41 +139,49 @@ ws.addEventListener('message', event => {
             }
 
             if(js1.texto.configurationKey[1].value=="true"){
+                keyOp='AuthorizationCacheEnabled';
+                boxkey="box_AuthorizationCacheEnabled";
                 contenido+=                
                 "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+
-                    "<select>"+
+                    "<select id='box_AuthorizationCacheEnabled'>"+
                     "<option selected='selected  value='true'>true</option>" +
                     "<option 'value='false'>false</option>"+
                 "</select>"+
-                "<div><button>Aceptar</button></div>"+
+                "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                 "</div></div>";
             }
             else{
+                keyOp='AuthorizationCacheEnabled';
+                boxkey="box_AuthorizationCacheEnabled";
                 contenido+=
                 "<div><div class=container_key>AuthorizationCacheEnabled</div><div class=container_conf>Value:<br>"+
-                    "<select>"+
+                    "<select id='box_AuthorizationCacheEnabled'>"+
                     "<option value='true'>true</option>" +
                     "<option selected='selected 'value='false'>false</option>"+
                 "</select>"+
-                "<div><button>Aceptar</button></div>"+
+                "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                 "</div></div>";
 
             }
 
             if(js1.texto.configurationKey[2].value=="true"){
+                keyOp='AuthorizeRemoteTxRequests';
+                boxkey="box_AuthorizeRemoteTxRequests";
                 contenido+=                
                 "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>Value:<br>"+
-                    "<select>"+
+                    "<select id='box_AuthorizeRemoteTxRequests'>"+
                     "<option selected='selected  value='true'>true</option>" +
                     "<option 'value='false'>false</option>"+
                 "</select>"+
-                "<div><button>Aceptar</button></div>"+
+                "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                 "</div></div>";
             }
             else{
+                keyOp='AuthorizeRemoteTxRequests';
+                boxkey="box_AuthorizeRemoteTxRequests";
                 contenido+=
                 "<div><div class=container_key>AuthorizeRemoteTxRequests</div><div class=container_conf>Value:<br>"+
-                    "<select>"+
+                    "<select id='box_AuthorizeRemoteTxRequests'>"+
                     "<option value='true'>true</option>" +
                     "<option selected='selected 'value='false'>false</option>"+
                 "</select>"+
@@ -181,85 +189,116 @@ ws.addEventListener('message', event => {
                 "</div></div>";
 
             }
-            contenido+= 
-                "<div><div class=container_key>ClockAlignedDataInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[3].value+"'><div><button>Aceptar</button></div></div></div>"+
-                "<div><div class=container_key>ConnectionTimeOut</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[4].value+"'><div><button>Aceptar</button></div></div></div>"+
-                "<div><div class=container_key>ConnectorPhaseRotation</div><div class=container_conf>"+js1.texto.configurationKey[5].value+"</div></div>"+ // conectorphase rotation se debe probar
-                "<div><div class=container_key>GetConfigurationMaxKeys</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[6].value+"'><div><button>Aceptar</button></div></div></div>"+
-                "<div><div class=container_key>HeartbeatInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[7].value+"'><div><button>Aceptar</button></div></div></div>";
+            keyOp='ClockAlignedDataInterval';
+            boxkey="box_ClockAlignedDataInterval";
+            contenido+= "<div><div class=container_key>ClockAlignedDataInterval</div><div class=container_conf><input type='text' id='box_ClockAlignedDataInterval' value='"+js1.texto.configurationKey[3].value+"'>"+"<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+"</div></div>";
+            keyOp='ConnectionTimeOut';
+            boxkey="box_ConnectionTimeOut";
+            contenido+=  "<div><div class=container_key>ConnectionTimeOut</div><div class=container_conf><input type='text' id='box_ConnectionTimeOut' value='"+js1.texto.configurationKey[4].value+"'>"+"<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+"</div></div>";
+            keyOp='ConnectorPhaseRotation';
+            boxkey="box_ConnectorPhaseRotation";
+            contenido+=  "<div><div class=container_key>ConnectorPhaseRotation</div><div class=container_conf>"+js1.texto.configurationKey[5].value+"</div></div>"; // conectorphase rotation se debe probar
+            keyOp='GetConfigurationMaxKeys';
+            boxkey="box_GetConfigurationMaxKeys";
+            contenido+=  "<div><div class=container_key>GetConfigurationMaxKeys</div><div class=container_conf>"+js1.texto.configurationKey[6].value+"</div></div>";
+            keyOp='HeartbeatInterval';
+            boxkey="box_HeartbeatInterval";
+            contenido+=  "<div><div class=container_key>HeartbeatInterval</div><div class=container_conf><input type='text' id='box_HeartbeatInterval' value='"+js1.texto.configurationKey[7].value+"'>"+"<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+"</div></div>";
 
             if(js1.texto.configurationKey[8].value=="true"){
+                keyOp='LocalAuthorizeOffline';
+                boxkey="box_LocalAuthorizeOffline";
                     contenido+=                
                     "<div><div class=container_key>LocalAuthorizeOffline</div><div class=container_conf>Value:<br>"+
-                        "<select>"+
+                        "<select id='box_LocalAuthorizeOffline'>"+
                         "<option selected='selected  value='true'>True</option>" +
                         "<option 'value='false'>False</option>"+
                     "</select>"+
-                    "<div><button>Aceptar</button></div>"+
+                    "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                     "</div></div>";
                 }
             else{
+                keyOp='LocalAuthorizeOffline';
+                boxkey="box_LocalAuthorizeOffline";
                 contenido+=
                     "<div><div class=container_key>LocalAuthorizeOffline</div><div class=container_conf>Value:<br>"+
-                        "<select>"+
+                        "<select id='box_LocalAuthorizeOffline'>"+
                         "<option value='true'>True</option>" +
                         "<option selected='selected 'value='false'>False</option>"+
                     "</select>"+
-                    "<div><button>Aceptar</button></div>"+
+                    "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                     "</div></div>";
     
                 }
 
             if(js1.texto.configurationKey[9].value=="true"){
+                keyOp='LocalPreAuthorize';
+                boxkey="box_LocalPreAuthorize";
                     contenido+=                
                     "<div><div class=container_key>LocalPreAuthorize</div><div class=container_conf>Value:<br>"+
-                        "<select>"+
+                        "<select id='box_LocalPreAuthorize'>"+
                         "<option selected='selected  value='true'>True</option>" +
                         "<option 'value='false'>False</option>"+
                     "</select>"+
-                    "<div><button>Aceptar</button></div>"+
+                    "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                     "</div></div>";
                 }
             else{
+                keyOp='LocalPreAuthorize';
+                boxkey="box_LocalPreAuthorize";
                 contenido+=
                     "<div><div class=container_key>LocalPreAuthorize</div><div class=container_conf>Value:<br>"+
-                        "<select>"+
+                        "<select id='box_LocalPreAuthorize'>"+
                         "<option value='true'>True</option>" +
                         "<option selected='selected 'value='false'>False</option>"+
                     "</select>"+
-                    "<div><button>Aceptar</button></div>"+
+                    "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                     "</div></div>";
     
                 }
+            keyOp='MeterValuesAlignedData';
+            boxkey="box_MeterValuesAlignedData";
+            //contenido+= "<div><div class=container_key>MeterValuesAlignedData</div><div class=container_conf><input type='text' id='box_MeterValuesAlignedData' value='"+js1.texto.configurationKey[10].value+"'>"+"<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+"</div></div>";
+            contenido+= "<div><div class=container_key>MeterValuesAlignedData</div><div class=container_conf>"+js1.texto.configurationKey[10].value+"</div></div>";
 
-            contenido+=               
-                "<div><div class=container_key>MeterValuesAlignedData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[10].value+"'><div><button>Aceptar</button></div></div></div>"+
-                "<div><div class=container_key>MeterValuesSampledData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[11].value+"'><div><button>Aceptar</button></div></div></div>"+
-                "<div><div class=container_key>MeterValueSampleInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[12].value+"'><div><button>Aceptar</button></div></div></div>"+
-                "<div><div class=container_key>NumberOfConnectors</div><div class=container_conf>"+js1.texto.configurationKey[13].value+"</div></div>";
+            keyOp='MeterValuesSampledData';
+            boxkey="box_MeterValuesSampledData";
+            //contenido+=  "<div><div class=container_key>MeterValuesSampledData</div><div class=container_conf><input type='text' id='MeterValuesSampledData' value='"+js1.texto.configurationKey[11].value+"'>"+"<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+"</div></div>";
+            contenido+=  "<div><div class=container_key>MeterValuesSampledData</div><div class=container_conf>"+js1.texto.configurationKey[11].value+"</div></div>";
+
+            keyOp='MeterValueSampleInterval';
+            boxkey="box_MeterValueSampleInterval";
+            contenido+=  "<div><div class=container_key>MeterValueSampleInterval</div><div class=container_conf><input type='text' id='box_MeterValueSampleInterval' value='"+js1.texto.configurationKey[12].value+"'>"+"<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+"</div></div>";
+            keyOp='NumberOfConnectors';
+            boxkey="box_NumberOfConnectors";
+            contenido+=  "<div><div class=container_key>NumberOfConnectors</div><div class=container_conf>"+js1.texto.configurationKey[13].value+"</div></div>";
                 
             if(js1.texto.configurationKey[14].value=="true"){
+                keyOp='StopTransactionOnEVSideDisconnect';
+                boxkey="box_StopTransactionOnEVSideDisconnect";
                     contenido+=                
                     "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>Value:<br>"+
-                        "<select>"+
+                        "<select id='box_StopTransactionOnEVSideDisconnect'>"+
                         "<option selected='selected  value='true'>True</option>" +
                         "<option 'value='false'>False</option>"+
                     "</select>"+
-                    "<div><button>Aceptar</button></div>"+
+                    "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                     "</div></div>";
                 }
             else{
+                keyOp='StopTransactionOnEVSideDisconnect';
+                boxkey="box_StopTransactionOnEVSideDisconnect";
                 contenido+=
                     "<div><div class=container_key>StopTransactionOnEVSideDisconnect</div><div class=container_conf>Value:<br>"+
-                        "<select>"+
+                        "<select id='box_StopTransactionOnEVSideDisconnect'>"+
                         "<option value='true'>True</option>" +
                         "<option selected='selected 'value='false'>False</option>"+
                     "</select>"+
-                    "<div><button>Aceptar</button></div>"+
+                    "<div><button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button></div>"+
                     "</div></div>";
     
                 }
-
+/*
             if(js1.texto.configurationKey[15].value=="true"){
                     contenido+=                
                     "<div><div class=container_key>StopTransactionOnInvalidId</div><div class=container_conf>Value:<br>"+
@@ -280,9 +319,9 @@ ws.addEventListener('message', event => {
                     "<div><button>Aceptar</button></div>"+
                     "</div></div>";
     
-                }
-            contenido+=                
-                "<div><div class=container_key>StopTxnSampledData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[16].value+"'><div><button>Aceptar</button></div></div></div>";
+                }*/
+            //contenido+=                
+                //"<div><div class=container_key>StopTxnSampledData</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[16].value+"'><div><button>Aceptar</button></div></div></div>";
                 //"<div><div class=container_key>TransactionMessageRetryInterval</div><div class=container_conf><input type='text' value='"+js1.texto.configurationKey[17].value+"'><div><button>Aceptar</button></div></div></div>";
 
                 ventana_configuracion.innerHTML=contenido;
