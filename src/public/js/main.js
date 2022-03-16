@@ -52,34 +52,7 @@ function getDiagnostics(stationId){
 }
 
 function getConfiguration(stationId){
-	/*ventana_configuracion.innerHTML=
-	"<div><label>AllowOfflineTxForUnknownId</label></div>"+
-	"<div><label>AuthorizationCacheEnabled</label></div>"+
-	"<div><label>AuthorizeRemoteTxRequests</label></div>"+
-	"<div><label>ClockAlignedDataInterval</label></div>"+
-	"<div><label>ConnectionTimeOut</label></div>"+
-	"<div><label>ConnectorPhaseRotation</label></div>"+
-	"<div><label>GetConfigurationMaxKeys</label></div>"+
-	"<div><label>HeartbeatInterval</label></div>"+
-	"<div><label>LocalAuthorizeOffline</label></div>"+
-	"<div><label>LocalPreAuthorize</label></div>"+
-	"<div><label>MeterValuesAlignedData</label></div>"+
-	"<div><label>MeterValuesSampledData</label></div>"+
-	"<div><label>MeterValueSampleInterval</label></div>"+
-	"<div><label>NumberOfConnectors</label></div>"+
-	"<div><label>StopTransactionOnEVSideDisconnect</label></div>"+
-	"<div><label>StopTransactionOnInvalidId</label></div>"+
-	"<div><label>StopTxnSampledData</label></div>"+
-	"<div><label>TransactionMessageRetryInterval</label></div>"+
-	"<div><label>WebSocketPingInterval</label></div>"+
-	"<div><label>LocalAuthListMaxLength</label></div>"+
-	"<div><label>SendLocalListMaxLength</label></div>"+
-	"<div><label>ReserveConnectorZeroSupported</label></div>";
-	//"<div><label>ConnectorPhaseRotation</label></div>"+
-	//"<div><label>ConnectorPhaseRotation</label></div>"+
-	//"<div><label>ConnectorPhaseRotation</label></div>"+
-	//"<div><label>ConnectorPhaseRotation</label></div>"
-	*/
+
 	console.log('stationId: ' + stationId);
 	var PayloadRequest = JSON.stringify({"tipo": "GetConfiguration", "stationId": stationId});
 	ws.send(PayloadRequest);
@@ -176,19 +149,16 @@ function UnlockConnector(stationId, id){
 	ws.send(PayloadRequest);
 
 }
-/*
-function buttons_unlockConnector(){
-	var currentDate = new Date();
 
-	ventana_configuracion.innerHTML=
-	"<p id='parrafo_prueba'></p>"
-"<input type='date' id='start' name='trip-start'"+
-       "value='2018-07-22'"+
-       "min='2018-01-01' max='2018-12-31'>";
-	   parrafo_prueba.innerHTML=currentDate;
+function remoteStartTransaction(stationId){
+	var PayloadRequest = JSON.stringify({"tipo": "RemoteStartTransaction","idtag":"7240E49A","Conector":1,"stationId": stationId});
+	ws.send(PayloadRequest);
 }
 
-*/
+function remoteStopTransaction(stationId){
+	var PayloadRequest = JSON.stringify({"tipo": "RemoteStopTransaction","idtag":"7240E49A"});
+	ws.send(PayloadRequest);
+}
 
 
 

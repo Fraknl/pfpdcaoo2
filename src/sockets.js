@@ -265,6 +265,34 @@ module.exports = function(server){
                             PayloadRequest = {"reservationId": 100};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='RemoteStartTransaction'){
+                            perfilcarga={
+                                    "chargingProfileId": 1,
+                                    "stackLevel": 1,
+                                    "chargingProfilePurpose": "TxProfile",
+                                    "chargingProfileKind": "Absolute",
+                                    "recurrencyKind": "Daily",
+                                    //"validFrom": '2022-03-11T13:10:00.000Z',
+                                    //"validTo": '2022-03-11T13:45:00.000Z',
+                                    "chargingSchedule": {
+                                        //"duration": 100,
+                                        "startSchedule": '2022-03-11T13:47:00.000Z',
+                                        "chargingRateUnit": "A",
+                                        "chargingSchedulePeriod": [{"startPeriod": 0, "limit": 18, "numberPhases": 3}]
+                                        //"minChargingRate": 0.4
+                                    }
+                                
+                            }
+                            PayloadRequest = {"connectorId":message.Conector, "idTag":message.idtag,"chargingProfile":perfilcarga};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            console.log(OIBCS)
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
+                        }else if(message.tipo=='RemoteStopTransaction'){
+                            PayloadRequest = {"idTag":message.idtag};
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            //stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
                         }else if(message.tipo=='ChangeAvailability'){
                             PayloadRequest = {"connectorId":message.Conector, "type":message.Estado};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
@@ -300,36 +328,194 @@ module.exports = function(server){
                                //'StopTxnAlignedDataMaxLength',
                                'StopTxnSampledData'
                                //'StopTxnSampledDataMaxLength',
-                               //'SupportedFeatureProfiles'//error
+                               //'SupportedFeatureProfiles'// si funciona
                                //'SupportedFeatureProfilesMaxLength',
-                               //'TransactionMessageAttempts'
+                               //'TransactionMessageAttempts' //si funciona
 
                                //'TransactionMessageRetryInterval', si funciona 
 
-                               //'UnlockConnectorOnEVSideDisconnect', //error
-                               //'WebSocketPingInterval' //error
-                               //'LocalAuthListEnabled' //error
+                               //'UnlockConnectorOnEVSideDisconnect', //si funciona
+                               //'WebSocketPingInterval' //si funciona
+                               //'LocalAuthListEnabled' // si funciona
                                
                                //'LocalAuthListMaxLength' // si funciona
                                //'SendLocalListMaxLength'// si funciona
-                               //'ReserveConnectorZeroSupported' //si funciona
-                               //'ChargeProfileMaxStackLevel'
-                               //'ChargingScheduleAllowedChargingRateUnit'//error
-                               //'ChargingScheduleMaxPeriods'
-                               //'ConnectorSwitch3to1PhaseSupported' //error
-                               //'MaxChargingProfilesInstalled' //error
-
-                           ]}
-
+                               //'ReserveConnectorZeroSupported' //si funciona pero da contradicciones con la pagina
+                               //'ChargeProfileMaxStackLevel'//requerido pero no se reconoce por la estacion
+                               //'ChargingScheduleAllowedChargingRateUnit'//requerido pero no se reconoce por la estacion
+                               //'ChargingScheduleMaxPeriods' //requerido pero no se reconoce por la estacion
+                               //'ConnectorSwitch3to1PhaseSupported'
+                               //'MaxChargingProfilesInstalled' // si funciona
+                               
 
 
+                               
+                                //csEndPoint
+                                //isLittleEndian
+                                //csVerifyCert
+                                //csAcceptUnknownSelfSigned
+                                //cbId
+                                //cbUseOcppTSync
+                                //cbUsePartialEnergy
+                                //cbUsePartialEnergyMeterVal
+                                //cbUseJson
+                                //cbStopIfConcurrentTx
+                                //cbConnTimeOut
+                                //cbCacheListMaxLength
+
+                                //cbRequireUserConfirmation
+                                //PlugAndChargeEnabled
+                                //PlugAndChargeUID
+                                //MeterValuesOnlyOnChargingStatus
+                                //AllowOfflineTxForUnknownId
+                                //AuthorizationCacheEnabled
+                                //AuthorizeRemoteTxRequests
+                                //ConnectionTimeOut
+                                //GetConfigurationMaxKeys
+                                //HeartbeatInterval
+                                //LocalAuthorizeOffline
+                                //LocalPreAuthorize
+                                
+                                //MeterValuesSampledData
+                                //MeterValueSampleInterval
+                                //StopTxnSampledData
+                                //NumberOfConnectors
+                                //ConnectorPhaseRotation
+                                //StopTransactionOnEVSideDisconnect
+                                //StopTransactionOnInvalidId
+                                //SupportedFeatureProfiles
+                                //TransactionMessageAttempts
+                                //TransactionMessageRetryInterval
+                                //UnlockConnectorOnEVSideDisconnect
+                                //WebSocketPingInterval
+                                
+                                //LocalAuthListEnabled
+                                //LocalAuthListMaxLength
+                                //SendLocalListMaxLength
+                                //ReserveConnectorZeroSupported
+                                //SupportedFileTransferProtocols
+                                //MaxChargingProfilesInstalled
+                                //pwStdHost
+                                //pwStdUser
+                                //pwStdPassword
+                                //pwStdUserEdit
+                                //pwStdPasswordEdit
+                                //pwStdPort
+
+                                //psiUser
+                                //psiPassword
+                                //psiAdminUser"
+                                //psiAdminPassword
+                                //psiLoglevel
+                                //psiPort
+                                //ClockAlignedDataInterval
+                                //MeterValuesAlignedData
+                                
+
+                           ]
+                        
+                        };
+
+                            PayloadRequest={"key":[
+                                'csEndPoint',
+                                'isLittleEndian',
+                                'csVerifyCert',
+                                'csAcceptUnknownSelfSigned',
+                                'cbId',
+                                'cbUseOcppTSync',
+                                'cbUsePartialEnergy',
+                                'cbUsePartialEnergyMeterVal',
+                                'cbUseJson',
+                                'cbStopIfConcurrentTx',
+                                'cbConnTimeOut',
+                                'cbCacheListMaxLength'
+                            ]};
+
+                            var OIBCS = [2, 'CC12', 'GetConfiguration', PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            console.log(OIBCS)
 
 
+                            PayloadRequest={"key":[
+                                'cbRequireUserConfirmation',
+                                'PlugAndChargeEnabled',
+                                'PlugAndChargeUID',
+                                'MeterValuesOnlyOnChargingStatus',
+                                'AllowOfflineTxForUnknownId',
+                                'AuthorizationCacheEnabled',
+                                'AuthorizeRemoteTxRequests',
+                                'ConnectionTimeOut',
+                                'GetConfigurationMaxKeys',
+                                'HeartbeatInterval',
+                                'LocalAuthorizeOffline',
+                                'LocalPreAuthorize'
+                            ]};
+
+
+                            var OIBCS = [2, 'CC22', 'GetConfiguration', PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            console.log(OIBCS)
+
+                            PayloadRequest={"key":[
+                                'MeterValuesSampledData',
+                                'MeterValueSampleInterval',
+                                'StopTxnSampledData',
+                                'NumberOfConnectors',
+                                'ConnectorPhaseRotation',
+                                'StopTransactionOnEVSideDisconnect',
+                                'StopTransactionOnInvalidId',
+                                'SupportedFeatureProfiles',
+                                'TransactionMessageAttempts',
+                                'TransactionMessageRetryInterval',
+                                'UnlockConnectorOnEVSideDisconnect',
+                                'WebSocketPingInterval'
+                            ]};
+
+                            var OIBCS = [2, 'CC32', 'GetConfiguration', PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            console.log(OIBCS)
+
+                            PayloadRequest={"key":[
+                                'LocalAuthListEnabled',
+                                'LocalAuthListMaxLength',
+                                'SendLocalListMaxLength',
+                                'ReserveConnectorZeroSupported',
+                                'SupportedFileTransferProtocols',
+                                'MaxChargingProfilesInstalled',
+                                'pwStdHost',
+                                'pwStdUser',
+                                'pwStdPassword',
+                                'pwStdUserEdit',
+                                'pwStdPasswordEdit',
+                                'pwStdPort'
+                            ]};
+
+                            var OIBCS = [2, 'CC42', 'GetConfiguration', PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            console.log(OIBCS)
+
+                            PayloadRequest={"key":[
+                                'psiUser',
+                                'psiPassword',
+                                'psiAdminUser',
+                                'psiAdminPassword',
+                                'psiLoglevel',
+                                'psiPort',
+                                'ClockAlignedDataInterval',
+                                'MeterValuesAlignedData'
+                            ]};
+
+                            var OIBCS = [2, 'CC52', 'GetConfiguration', PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            console.log(OIBCS)
+
+                            PayloadRequest = {"key": ["csEndPoint"]};
                             //PayloadRequest = {"key": "AllowOfflineTxForUnknownId", "value": 'true'};
+                            
                             //var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             
-                            var OIBCS = [2, 'CC', 'GetConfiguration', PayloadRequest];
-                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            //var OIBCS = [2, 'CC', 'GetConfiguration', PayloadRequest];
+                            //stationClient.write(funciones.constructReply(OIBCS, 0x1));
 
                         }else if(message.tipo=='ChConfiguration'){
                             PayloadRequest = {"key": message.key, "value": message.valor};
