@@ -3,6 +3,8 @@ function parseMessage (buffer) {
   const opCode = firstByte & 0xF;
   const fin = firstByte & 0x80;
   console.log('bit fin: ' + fin);
+  console.log('este es el opcode')
+  console.log(opCode)
 
   if (opCode === 0x8) 
      return null; 

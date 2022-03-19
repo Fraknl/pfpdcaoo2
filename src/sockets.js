@@ -14,23 +14,6 @@ const nets = networkInterfaces();
 const results = Object.create(null); // Or just '{}', an empty object
 
 
-function greeting(stationClient,PayloadRequest){
-
-                            
-    var OIBCS = [2, 'CC12', 'GetConfiguration', PayloadRequest];
-    stationClient.write(funciones.constructReply(OIBCS, 0x1));
-    console.log(OIBCS)
-
-}
-
-function greeting2(stationClient,PayloadRequest){
-
-                            
-    var OIBCS = [2, 'CC12', 'GetConfiguration', PayloadRequest];
-    stationClient.write(funciones.constructReply(OIBCS, 0x1));
-    console.log(OIBCS)
-
-}
 
 
 
@@ -278,8 +261,10 @@ module.exports = function(server){
                             temporalClient.write(response.join('\r\n') + '\r\n\r\n' );
                             //temporalClient.write(funciones.constructReply(response, 0x1));
                         }else if(message.tipo=='ReserveNow'){
-                            PayloadRequest = {"connectorId": 1,"expiryDate":"2022-02-28T11:10:00.000Z","idTag":"7240E49A","reservationId":100};
+                            //PayloadRequest = {"connectorId": 1,"expiryDate":"2022-02-28T11:10:00.000Z","idTag":"7240E49A","reservationId":100};
+                            PayloadRequest = {"connectorId": message.connectorId,"expiryDate":message.expiryDate,"idTag":message.idTag,"reservationId":message.reservationId};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            console.log(OIBCS)
                             stationClient.write(funciones.constructReply(OIBCS, 0x1))
                         }else if(message.tipo=='CancelReservation'){
                             PayloadRequest = {"reservationId": 100};
@@ -317,6 +302,12 @@ module.exports = function(server){
                             PayloadRequest = {"connectorId":message.Conector, "type":message.Estado};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='ClearCache'){
+                            
+                            PayloadRequest = {};
+                            var OIBCS = [2, 'Cl', message.tipo,PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
                         }else if(message.tipo=='ChangeConfiguration'){
 
                             PayloadRequest = {"key": 
@@ -438,9 +429,9 @@ module.exports = function(server){
                         };
 
                             var OIBCS = [2, 'CC', 'GetConfiguration', PayloadRequest];
-                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            //stationClient.write(funciones.constructReply(OIBCS, 0x1));
 
-                       /*     PayloadRequest1={"key":[
+                       PayloadRequest1={"key":[
                                 'csEndPoint',
                                 'isLittleEndian',
                                 'csVerifyCert',
@@ -453,7 +444,7 @@ module.exports = function(server){
                                 'cbStopIfConcurrentTx',
                                 'cbConnTimeOut',
                                 'cbCacheListMaxLength'
-                            ]};*/
+                            ]};
 
                             //var OIBCS = [2, 'CC12', 'GetConfiguration', PayloadRequest];
                             //stationClient.write(funciones.constructReply(OIBCS, 0x1));
@@ -461,7 +452,7 @@ module.exports = function(server){
                             
                            /* const myTimeout =setTimeout(function(){
 
-                                greeting(stationClient,PayloadRequest1)
+                                
                             
                                 
                             }, 5000);
@@ -471,7 +462,7 @@ module.exports = function(server){
 
 
 
-                           /* PayloadRequest2={"key":[
+                           PayloadRequest2={"key":[
                                 'cbRequireUserConfirmation',
                                 'PlugAndChargeEnabled',
                                 'PlugAndChargeUID',
@@ -486,13 +477,7 @@ module.exports = function(server){
                                 'LocalPreAuthorize'
                             ]};
 
-                            const myTimeout2 = setTimeout(function(){
 
-                                greeting(stationClient,PayloadRequest2)
-                            
-                                
-                            }, 5000);
-                            clearTimeout(myTimeout2);*/
 
 
                             //var OIBCS = [2, 'CC22', 'GetConfiguration', PayloadRequest];
@@ -507,7 +492,7 @@ module.exports = function(server){
                             
                             }, 5000);*/
 
-                           /* PayloadRequest3={"key":[
+                            PayloadRequest3={"key":[
                                 'MeterValuesSampledData',
                                 'MeterValueSampleInterval',
                                 'StopTxnSampledData',
@@ -522,16 +507,10 @@ module.exports = function(server){
                                 'WebSocketPingInterval'
                             ]};
 
-                            const myTimeout3 = setTimeout(function(){
-
-                                greeting(stationClient,PayloadRequest3)
-                            
-                                
-                            }, 5000);
-                            clearTimeout(myTimeout3);*/
 
                             //var OIBCS = [2, 'CC32', 'GetConfiguration', PayloadRequest];
                             //stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            
                             //console.log(OIBCS)
                             
                             /*const myTimeout3 = setTimeout(function(){
@@ -542,7 +521,7 @@ module.exports = function(server){
                             
                             }, 5000);*/
 
-                           /* PayloadRequest={"key":[
+                           PayloadRequest4={"key":[
                                 'LocalAuthListEnabled',
                                 'LocalAuthListMaxLength',
                                 'SendLocalListMaxLength',
@@ -555,7 +534,7 @@ module.exports = function(server){
                                 'pwStdUserEdit',
                                 'pwStdPasswordEdit',
                                 'pwStdPort'
-                            ]};*/
+                            ]};
 
                             //var OIBCS = [2, 'CC42', 'GetConfiguration', PayloadRequest];
                             //stationClient.write(funciones.constructReply(OIBCS, 0x1));
@@ -570,7 +549,7 @@ module.exports = function(server){
                             
                             }, 5000);*/
 
-                            /*PayloadRequest={"key":[
+                            PayloadRequest5={"key":[
                                 'psiUser',
                                 'psiPassword',
                                 'psiAdminUser',
@@ -579,11 +558,15 @@ module.exports = function(server){
                                 'psiPort',
                                 'ClockAlignedDataInterval',
                                 'MeterValuesAlignedData'
-                            ]};*/
+                            ]};
 
-                            //var OIBCS = [2, 'CC52', 'GetConfiguration', PayloadRequest];
-                            //stationClient.write(funciones.constructReply(OIBCS, 0x1));
-                            //console.log(OIBCS)
+                            //PayloadRequest={"key":'csEndPoint',"value":"ws://192.168.222.201:3000"};
+
+                            var OIBCS = [2, 'CC52', 'GetConfiguration', PayloadRequest3];
+                            //var OIBCS = [2, 'CC52', 'ChangeConfiguration', PayloadRequest1];
+                            
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                            console.log(OIBCS)
 
 
                             /*const myTimeout5 = setTimeout(function (){
@@ -644,6 +627,16 @@ module.exports = function(server){
                             PayloadRequest = {};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
+                        }else if(message.tipo=='Reset'){
+
+                            PayloadRequest = {'type':message.Type};
+                            
+                            var OIBCS = [2, '10', message.tipo, PayloadRequest];
+                            stationClient.write(funciones.constructReply(OIBCS, 0x1));
+
+
+
+
                         }else if(message.tipo=='SetChargingProfile'){
                             PayloadRequest = {
                                 "connectorId": 1,

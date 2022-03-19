@@ -193,8 +193,8 @@
                                     <button onclick="remoteStartTransaction(1)" class="btn btn-danger m-1">Iniciar Transaccion Remota</button>
                                     <button onclick="remoteStopTransaction(1)" class="btn btn-info m-1">Detener Transaccion Remota</button>
                                     <button onclick="getLocalListVersion(1)" class="btn btn-warning m-1">Obtener Version de Lista Local</button>
-                                    <button onclick="reserveNow(1)" class="btn btn-success m-1">Reservar Ahora</button>
-                                    <button onclick="reset(1)" class="btn btn-primery m-1">Resetear</button>
+                                    <button onclick="buttons_reserveNow(1)" class="btn btn-success m-1">Reservar Ahora</button>
+                                    <button onclick="buttons_reset(1)" class="btn btn-primery m-1">Resetear</button>
                                     <button onclick="sendLocalList(1)" class="btn btn-secondary m-1">Enviar Lista Local</button>
                                     <button onclick="setChargingProfile(1)" class="btn btn-light m-1">Establecer Perfil de Carga</button>
                                     <button onclick="triggerMessage(1)" class="btn btn-muted m-1">Solicitar Operacion OCPP</button>
@@ -217,7 +217,74 @@
                         
                         
                     </div>
-                    <div id="ventana_configuracion" class="card"></div>
+                    
+                    <div id="ventana_configuracion" class="card">
+                            <div id="ventana_reserva">
+                                <select id='conector_reserva'>
+                                    <option value=1>CCS</option>
+                                    <option value=2>CHADEMO</option>
+                                    <option value=3>AC</option>
+                                </select>
+
+                                <input type='text' id='id_reserva' name='reservation' value='7240E49A'>
+
+                                <input type='date' id='fecha_reserva' name='reservation' value='2018-01-01'
+                                    min='2018-01-01' max='2025-12-31'>
+
+                                <input type="time" name="" id="hora_reserva">
+                                
+                                <div><button onclick="reserveNow(1)">Reservar</button></div>
+                            </div>
+
+
+                            <div id="ventana_disponibilidad">
+                                <div class='custom-control custom-switch'>
+                                    <input type='checkbox' class='custom-control-input' id='CCS' checked='checked' onchange='ChangeAvailability(1,this.id)'>
+	                                <label class='custom-control-label' for='CCS'>Conector CCS</label> &nbsp;
+                                </div>
+                                <div class='custom-control custom-switch'>
+	                                <input type='checkbox' class='custom-control-input' id='Chademo' checked='checked' onchange='ChangeAvailability(1,this.id)'>
+	                                <label class='custom-control-label' for='Chademo'>Conector Chademo</label>&nbsp;
+                                </div>
+                                <div class='custom-control custom-switch'>
+	                                <input type='checkbox' class='custom-control-input' id='AC' checked='checked' onchange='ChangeAvailability(1,this.id)'>
+	                                <label class='custom-control-label' for='AC'>Conector AC</label>&nbsp;
+                                </div>
+                            </div>
+
+
+                            <div id="ventana_desbloqueo">
+                                <div style='margin-top:10px'>
+                                    <label>Conector CCS</label>	
+                                    <button id='UnCCS' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>
+                                </div>
+                                <div style='margin-top:10px'>
+                                    <label>Conector Chademo</label>
+                                    <button  id='UnChademo' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>
+                                </div>
+                                <div style='margin-top:10px'>
+                                    <label>Conector AC</label>
+                                    <button id='UnAC' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>
+                                </div>
+                            </div>
+
+                            
+                            <div id="ventana_reset">
+                                <div style='margin-top:10px'>
+		                            <button id='SoftReset' onclick='reset(1,this.id)' class='btn btn-info'>Soft Reset</button>
+	                            </div>
+	                            <div style='margin-top:10px'>
+		                            <button  id='HardReset' onclick='reset(1,this.id)' class='btn btn-info'>Hard Reset</button>
+	                            </div>
+                            </div>
+
+
+                    </div>
+                    
+
+
+
+
                    </div>
                 </div>
             </div>

@@ -41,7 +41,7 @@ function getCompositeSchedule(stationId){
 
 function cancelReservation(stationId){
 	console.log('stationId: ' + stationId);
-	var PayloadRequest = JSON.stringify({"tipo": "CancelReservation", "stationId": stationId, "reservationId": 1});
+	var PayloadRequest = JSON.stringify({"tipo": "CancelReservation", "stationId": stationId, "reservationId": 100});
 	ws.send(PayloadRequest);
 }
 
@@ -70,18 +70,10 @@ function changeConfiguration(stationId){
 
 
 function buttons_changeAvailability(){
-	ventana_configuracion.innerHTML= "<div class='custom-control custom-switch'>"+
-	"<input type='checkbox' class='custom-control-input' id='CCS' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
-	"<label class='custom-control-label' for='CCS'>Conector CCS</label> &nbsp;"+ 
-"</div>"+
-"<div class='custom-control custom-switch'>"+
-"	<input type='checkbox' class='custom-control-input' id='Chademo' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
-	"<label class='custom-control-label' for='Chademo'>Conector Chademo</label>&nbsp;"+ 
-"</div>"+
-"<div class='custom-control custom-switch'>"+
-	"<input type='checkbox' class='custom-control-input' id='AC' checked='checked' onchange='ChangeAvailability(1,this.id)'>"+
-	"<label class='custom-control-label' for='AC'>Conector AC</label>&nbsp;"+
-"</div>"
+	
+	ocultar_bloques();
+	document.getElementById("ventana_disponibilidad").style.display="block";
+
 }
 
 
@@ -114,20 +106,11 @@ function ChangeAvailability(stationId,id){
 }
 
 function buttons_unlockConnector(){
+
+	ocultar_bloques();
+	document.getElementById("ventana_desbloqueo").style.display="block";
 	
-	ventana_configuracion.innerHTML=
-"<div style='margin-top:10px'>"+
-	"<label>Conector CCS</label>"+	
-	"<button id='UnCCS' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
-"</div>"+
-"<div style='margin-top:10px'>"+
-	"<label>Conector Chademo</label>"+
-	"<button  id='UnChademo' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
-"</div>"+
-"<div style='margin-top:10px'>"+
-	"<label>Conector AC</label>"+
-	"<button id='UnAC' onclick='UnlockConnector(1,this.id)' class='btn btn-info'>Desbloquear</button>"+
-"</div>"
+
 }
 
 function UnlockConnector(stationId, id){
@@ -160,9 +143,37 @@ function remoteStopTransaction(stationId){
 	ws.send(PayloadRequest);
 }
 
+function buttons_reset(stationId){
+
+	ocultar_bloques();
+	document.getElementById('ventana_reset').style.display="block";
+
+}
+
+function reset(stationId,id){
+	if (id=='SoftReset'){
+		var PayloadRequest = JSON.stringify({"tipo": "Reset", "Type": 'Soft',"stationId": stationId});
+		ws.send(PayloadRequest);
 
 
 
+	}
+	else if(id=='HardReset'){
+		var PayloadRequest = JSON.stringify({"tipo": "Reset", "Type": 'Hard',"stationId": stationId});
+		ws.send(PayloadRequest);
+
+
+
+	}
+
+}
+
+function clearCache(stationId){
+	
+	var PayloadRequest = JSON.stringify({"tipo": "ClearCache", "stationId": stationId});
+	ws.send(PayloadRequest);
+
+}
 
 function david(stationId){
 	console.log('stationId: ' + stationId);
@@ -170,6 +181,49 @@ function david(stationId){
 	ws.send(PayloadRequest);
 	
 }
+
+function buttons_reserveNow(stationId){
+	ocultar_bloques();
+	var currentDate = new Date();
+	document.getElementById('ventana_reserva').style.display="block";
+	document.getElementById('fecha_reserva').value=currentDate.toISOString().slice(0,10);
+}
+
+function reserveNow(stationId){
+	
+	//"connectorId": 1,"expiryDate":"2022-02-28T11:10:00.000Z","idTag":"7240E49A","reservationId":100
+
+	var hora_res=document.getElementById('hora_reserva').value;
+	var fecha_res=document.getElementById('fecha_reserva').value;
+	var conector_res=parseInt(document.getElementById('conector_reserva').value);
+	var id_res=document.getElementById('id_reserva').value;
+	var expiracion=fecha_res+"T"+hora_res+":00.000Z";
+
+	console.log('hora reserva')
+	console.log(hora_res)
+	console.log('fecha reserva')
+	console.log(fecha_res)
+	console.log('conector reserva')
+	console.log(conector_res)
+	console.log('id reserva')
+	console.log(id_res)
+
+	console.log(expiracion)
+
+	//var PayloadRequest = {"tipo": "ReserveNow", "stationId": stationId, "connectorId":conector_res, "expiryDate":expiracion, "idTag":id_res, "reservationId":100};
+	var PayloadRequest = JSON.stringify({"tipo": "ReserveNow", "stationId": stationId, "connectorId":conector_res, "expiryDate":expiracion, "idTag":id_res, "reservationId":100});
+	ws.send(PayloadRequest);
+
+}
+
+function ocultar_bloques(){
+	document.getElementById("ventana_desbloqueo").style.display="none";
+	document.getElementById("ventana_disponibilidad").style.display="none";
+	document.getElementById('ventana_reserva').style.display="none";
+	document.getElementById('ventana_reset').style.display="none";
+
+}
+
 
 function xhr(){
 	console.log('se llama a xhr')
@@ -189,6 +243,11 @@ function fromStationsToRealTime(){
 }
 
 function toStationDetails(id){
+
+	ocultar_bloques();
+	//document.getElementById("ventana_disponibilidad").style.display="none";
+	//document.getElementById('ventana_reserva').style.display="none";
+
 	console.log('datos estacion: ');
 	const url = '/home/estaciones/editar/'+id;
 	http.open("get", url);

@@ -125,7 +125,7 @@ ws.addEventListener('message', event => {
                 "</div></div>";
             }
             else{
-                keyOp='AllowOfflineTxForUnknownId';
+                keyOp='csAcceptUnknownSelfSigned';
                 boxkey="box_AllowOfflineTxForUnknownId";
                 contenido=
                 "<div><div class=container_key>AllowOfflineTxForUnknownId</div><div class=container_conf>Value:<br>"+
