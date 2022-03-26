@@ -402,7 +402,7 @@ ws.addEventListener('message', event => {
     }
 
     if(tipo == 'status'){
-        if(texto=='Cargando'){
+        if(texto=='cargando'){
            console.log('Se esta cargando xdxdxdxd')
 
         }else{

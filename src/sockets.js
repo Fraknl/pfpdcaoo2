@@ -207,6 +207,9 @@ module.exports = function(server){
                     console.log(CallResult);
                     socket.write(funciones.constructReply(CallResult, opCode));
 
+                    console.log('este es el payload response')
+                    console.log(PayloadResponseNav)
+
                     /*************Respuesta para navegador****************/
                     if(PayloadResponseNav){ 
                         clientenav = clientes.get(0);
@@ -288,7 +291,7 @@ module.exports = function(server){
                                     }
                                 
                             }
-                            PayloadRequest = {"connectorId":message.Conector, "idTag":message.idtag,"chargingProfile":perfilcarga};
+                            PayloadRequest = {"connectorId":message.Conector, "idTag":message.idtag};
                             var OIBCS = [2, '10', message.tipo, PayloadRequest];
                             console.log(OIBCS)
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));
@@ -562,7 +565,7 @@ module.exports = function(server){
 
                             //PayloadRequest={"key":'csEndPoint',"value":"ws://192.168.222.201:3000"};
 
-                            var OIBCS = [2, 'CC52', 'GetConfiguration', PayloadRequest3];
+                            var OIBCS = [2, 'CC52', 'GetConfiguration', PayloadRequest1];
                             //var OIBCS = [2, 'CC52', 'ChangeConfiguration', PayloadRequest1];
                             
                             stationClient.write(funciones.constructReply(OIBCS, 0x1));

@@ -39,7 +39,8 @@ function StatusNotificationResponse(Payload){
     console.log('Esto es pyload functions');
     console.log(Payload);
     const currentDate = new Date();
-    PayloadResponse = {"status": "Accepted", "currentDate": currentDate};
+    //PayloadResponse = {"status": "Accepted", "currentDate": currentDate};
+    PayloadResponse = {};
     PayloadResponseNav = {'tipo': 'status', 'texto':Payload.status};
     return [PayloadResponse, PayloadResponseNav];
 }
@@ -137,6 +138,7 @@ async function StopTransactionConf(Payload){
     //var transactionId = Payload.transactionId;
     let estado = 'Finalizada' 
     let transactionId = Payload.transactionId;
+
     let hora_fin = Payload.timestamp;
     let meterStart = await pool.query('SELECT energia_inicio FROM transacciones WHERE id_transaccion='+transactionId+';');
     console.log('Esto es meter start');

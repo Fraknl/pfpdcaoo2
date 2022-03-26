@@ -163,7 +163,7 @@
                             <em class="fa fa-pencil"></em> Historial de Cargas</a>
 
                             <button onclick="getDiagnostics()" class="btn btn-danger">Pedir diagnostico</button>
-                            <button onclick="david(1)" class="btn btn-danger">boton david</button>
+                            <!--<button onclick="david(1)" class="btn btn-danger">boton david</button>-->
 
                         </div>
                     <!--</div> 
@@ -190,7 +190,7 @@
                                     <button onclick="getCompositeSchedule(1)" class="btn btn-light m-1">Obtener Horario Compuesto</button>
                                     <button onclick="getConfiguration(1)" class="btn btn-dark m-1">Obtener configuracion</button>
                                     <button onclick="getDiagnostics(1)" class="btn btn-muted m-1">Pedir diagnostico</button>
-                                    <button onclick="remoteStartTransaction(1)" class="btn btn-danger m-1">Iniciar Transaccion Remota</button>
+                                    <button onclick="buttons_startRemoteTransaction()" class="btn btn-danger m-1">Iniciar Transaccion Remota</button>
                                     <button onclick="remoteStopTransaction(1)" class="btn btn-info m-1">Detener Transaccion Remota</button>
                                     <button onclick="getLocalListVersion(1)" class="btn btn-warning m-1">Obtener Version de Lista Local</button>
                                     <button onclick="buttons_reserveNow(1)" class="btn btn-success m-1">Reservar Ahora</button>
@@ -276,6 +276,92 @@
 	                            <div style='margin-top:10px'>
 		                            <button  id='HardReset' onclick='reset(1,this.id)' class='btn btn-info'>Hard Reset</button>
 	                            </div>
+                            </div>
+
+                            <div id="ventana_startremote">
+                                <select id='conector_startremote'>
+                                    <option value=1>CCS</option>
+                                    <option value=2>CHADEMO</option>
+                                    <option value=3>AC</option>
+                                </select>
+
+                                <input type='text' id='id_startremote' name='reservation' value='7240E49A'>
+                                <button  id='start_remote_t' onclick='remoteStartTransaction(1)' class='btn btn-info'>Iniciar transaccion</button>
+                            </div>
+
+                            <div id="ventana_cambiarconfiguracion">
+                                
+                                <div>
+                                    <div class=container_key>AllowOfflineTxForUnknownId</div>
+                                    <div class=container_conf>Value:<br>
+                                    <select id='box_AllowOfflineTxForUnknownId'>
+                                        <!--<option selected='selected'  value='true'>true</option>-->
+                                        <option value='true'>true</option>
+                                        <option value='false'>false</option>
+                                    </select>
+                                    <div>
+                                        <button onclick='prueba_boton()'>Aceptar</button>
+                                        <!--<button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button>-->
+                                    </div>
+                                    </div>
+                                    
+                                    <div class=container_key>AuthorizationCacheEnabled</div>
+                                    <div class=container_conf>Value:<br>
+                                    <select id='box_AuthorizationCacheEnabled'>
+                                        <option value='true'>true</option>
+                                        <option value='false'>false</option>
+                                    </select>
+                                    <div>
+                                        <button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button>
+                                    </div>
+                                    </div>
+
+                                    <div class=container_key>AuthorizeRemoteTxRequests</div>
+                                    <div class=container_conf>Value:<br>
+                                    <select id='box_AuthorizeRemoteTxRequests'>
+                                        <option value='true'>true</option>
+                                        <option value='false'>false</option>
+                                    </select>
+                                    <div>
+                                        <button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button>
+                                    </div>
+                                    </div>
+
+                                    <div class=container_key>ClockAlignedDataInterval</div>
+                                    <div class=container_conf>
+                                        <input type='text' id='box_ClockAlignedDataInterval'>
+                                        <div>
+                                            <button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button>
+                                        </div>
+                                    </div>
+
+                                    <div class=container_key>ConnectionTimeOut</div>
+                                    <div class=container_conf>
+                                        <input type='text' id='box_ConnectionTimeOut'>
+                                        <div>
+                                            <button onclick='chconfiguration(1,\""+keyOp+"\",\""+boxkey+"\")'>Aceptar</button>
+                                        </div>
+                                    </div>
+
+
+                                    <div class=container_key>ConnectorPhaseRotation</div>
+                                    <div class=container_conf> conectorphase rotation se debe probar </div>
+
+                                    <div class=container_key>GetConfigurationMaxKeys</div>
+                                    <div class=container_conf>"+js1.texto.configurationKey[6].value+"</div>
+
+
+
+
+
+
+
+
+
+
+
+                                </div>
+
                             </div>
 
 

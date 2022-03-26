@@ -67,10 +67,14 @@ function changeConfiguration(stationId){
 
 }
 
+function buttons_startRemoteTransaction(){
+	ocultar_bloques();
+	document.getElementById("ventana_startremote").style.display="block";
 
+}
 
 function buttons_changeAvailability(){
-	
+
 	ocultar_bloques();
 	document.getElementById("ventana_disponibilidad").style.display="block";
 
@@ -134,7 +138,10 @@ function UnlockConnector(stationId, id){
 }
 
 function remoteStartTransaction(stationId){
-	var PayloadRequest = JSON.stringify({"tipo": "RemoteStartTransaction","idtag":"7240E49A","Conector":1,"stationId": stationId});
+	var idtag=document.getElementById("id_startremote").value;
+	var conector=parseInt(document.getElementById("conector_startremote").value);
+
+	var PayloadRequest = JSON.stringify({"tipo": "RemoteStartTransaction","idtag":idtag,"Conector":conector,"stationId": stationId});
 	ws.send(PayloadRequest);
 }
 
@@ -216,11 +223,26 @@ function reserveNow(stationId){
 
 }
 
+function buttons_changeConfiguration(){
+	document.getElementById("ventana_cambiarconfiguracion").style.display="block";
+
+	//document.getElementById("box_AllowOfflineTxForUnknownId").value='false'
+
+
+}
+
+function prueba_boton(){
+	document.getElementById("box_AllowOfflineTxForUnknownId").value='false'
+
+}
+
 function ocultar_bloques(){
+	document.getElementById("ventana_cambiarconfiguracion").style.display="none";
 	document.getElementById("ventana_desbloqueo").style.display="none";
 	document.getElementById("ventana_disponibilidad").style.display="none";
 	document.getElementById('ventana_reserva').style.display="none";
 	document.getElementById('ventana_reset').style.display="none";
+	document.getElementById("ventana_startremote").style.display="none";
 
 }
 
