@@ -38,12 +38,12 @@ router.post('/Home', (req, res, next) => {
 		successRedirect: '/Home',
 		failureRedirect: '/'
 	})(req, res, next);
-	/*
+	
 	if(username=='Administrador'){
 		if(password=='contraadmin'){
 			res.render('Home.hbs', {'menu': 'si'}); 
 		};
-	};*/
+	};
 });
 
 module.exports = router; 
